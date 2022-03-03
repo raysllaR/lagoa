@@ -1,0 +1,38 @@
+.container-nav-tabs {
+  display: flex;
+  max-width: 1200px;
+  width: 100%;
+  height: 48px;
+  background-color: #fff;
+  margin-top: 10px;
+  border-radius: 8px;
+  box-shadow: #d3d9df 0px 6px 17px;
+  align-items: center;
+  overflow: hidden;
+  transition: 0.2s;
+  flex-basis: content;
+}
+
+.container-nav-tabs > button {
+  min-height: 48px;
+  background-color: #fff;
+  color: #8a97a2;
+  font-weight: 500;
+  line-height: 1.75;
+  font-size: 0.875rem;
+  padding: 6px 12px;
+  text-align: center;
+  cursor: pointer;
+  margin-left: 37px;
+  letter-spacing: 0.4px;
+}
+
+.container-nav-tabs > button:active {
+  background-color: rgba(1, 84, 157, 0.2);
+  transition: 0.2s;
+}
+
+.container-nav-tabs > .btn-ativo {
+  color: #01549d;
+  box-shadow: inset 0px -3px 0px -1px #01549d;
+}
