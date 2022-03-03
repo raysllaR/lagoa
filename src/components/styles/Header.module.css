@@ -1,0 +1,246 @@
+.Header {
+  width: 100%;
+  height: 310px;
+  display: flex;
+  background-image: url(https://sofalta.eu/meuingresso/public/lagoa/header/header.png);
+  background-size: cover;
+  background-color: #fbfbfb;
+  background-position: bottom;
+  position: relative;
+  justify-content: center;
+  transition: 0.5s;
+  margin-bottom: 65px;
+  opacity: 1;
+}
+  
+.Header::after,
+.Header::before {
+  content: "";
+  height: 277px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: top;
+  position: absolute;
+  bottom: 0;
+  transition: 0.2s;
+}
+  
+.Header::after {
+  width: 272px;
+  background-image: url(https://sofalta.eu/meuingresso/public/lagoa/header/mascote2.png);
+  right: 23%;
+}
+  
+.Header::before {
+  width: 320px;
+  background-image: url(https://sofalta.eu/meuingresso/public/lagoa/header/mascote1.png);
+  left: 18%;
+}
+  
+.Header .aLogoLagoa {
+  display: flex;
+  justify-content: center;
+  height: max-content;
+  position: relative;
+  margin-top: 110px;
+  z-index: 2;
+  top: 18%;
+}
+  
+.Header .aLogoLagoa img {
+  width: 395px;
+  transition: 0.5s;
+}
+  
+.Header .divImgOnda {
+  width: 100%;
+  min-height: 100%;
+  background-image: url(https://sofalta.eu/meuingresso/public/lagoa/header/header2.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: bottom;
+  bottom: 0;
+  margin-bottom: -1px;
+  display: flex;
+  position: absolute;
+  z-index: 1;
+  transition: 0.2s;
+}
+  
+.Header .topo {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  position: absolute;
+}
+  
+.Header .divLogoSoFaltaEu {
+  display: flex;
+  height: 21px;
+  padding: 2px 5px 0px;
+  border-radius: 0px 0px 4px 4px;
+  border-bottom: 1px solid rgb(206, 206, 206);
+  border-left: 1px solid rgb(206, 206, 206);
+  border-right: 1px solid rgb(206, 206, 206);
+  background-color: #fbfbfb;
+  margin-left: 10px;
+}
+  
+.Header .divLogoSoFaltaEu img {
+  height: 17px;
+}
+  
+.Header .divButtons {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    height: 10px;
+    padding-right: 15px;
+    margin-left: 5px;
+  }
+  
+.Header .divButtons button {
+  height: 35px;
+  margin-left: 5px;
+  margin-right: 5px;
+  display: flex;
+  align-items: center;
+  font-size: 0.95em;
+  z-index: 5;
+  cursor: pointer;
+  color: rgb(48, 58, 66);
+  background-color: rgb(245, 247, 250);
+  border-radius: 6px;
+  border: 1px solid rgb(224, 230, 235);
+  transition: 0.2s;
+  text-indent: 8px;
+}
+  
+.Header .divButtons button:hover {
+  border: 1px solid #6b8194;
+  transition: 0.2s;
+}
+  
+.Header .divButtons button:active {
+  opacity: 0.7;
+  transform: scale(0.97);
+}
+
+/*Mascotes*/
+@media only screen and (max-width: 1580px){
+  .Header::after {
+    right: 20%;
+  }
+}
+
+@media only screen and (max-width: 1480px){
+  .Header::after {
+    right: 15%;
+  }
+  .Header::before {
+    left: 13%;
+  }
+}
+
+@media only screen and (max-width: 1280px){
+  .Header .divImgOnda {
+    min-height: 43%;
+    background-size: cover;
+  }
+}
+
+@media only screen and (max-width: 1247px){
+  .Header::after {
+    right: 12%;
+  }
+  .Header::before {
+    left: 11%;
+  }
+}
+
+@media only screen and (max-width: 1246.99px){
+  .Header::after {
+    right: 3%;
+  }
+  .Header::before {
+    left: 0%;
+  }
+}
+
+@media only screen and (max-width: 850px){
+  .Header::after {
+    right: -5%;
+  }
+  .Header::before {
+    height: 275px;
+    left: -9%;
+  }
+}
+
+@media only screen and (max-width: 750px){
+  .Header::after {
+    right: 0%;
+    height: 318px;
+  }
+  .Header::before {
+    height: 315px;
+    left: -7%;
+  }
+
+  .aLogoLagoa img {
+    width: 345px;
+  }
+}
+
+@media only screen and (max-width: 630px){
+  .Header::after {
+    display: none;
+  }
+
+  .Header::before{
+    display: none;
+  }
+
+  .Header .divImgOnda {
+    min-height: 50%;
+  }
+
+  .aLogoLagoa img{
+    width: 380px;
+  }
+}
+/*Btn Celular*/
+@media only screen and (max-width: 550.99px) {
+  .Header .buttonCelular {
+    display: none !important;
+  }
+}
+
+@media only screen and (max-width: 465px){
+  .divImgOnda {
+    min-height: 70% !important;
+  }
+  .aLogoLagoa img{
+    width: 310px !important;
+  }
+}
+
+/*
+@media only screen and (max-width: 465px)
+.imageContainerCenter>a>img {
+    width: 310px;
+}
+
+@media only screen and (max-width: 630px)
+.imageContainerCenter>a>img {
+    width: 380px;
+}
+@media only screen and (max-width: 750px)
+.imageContainerCenter>a>img {
+    width: 345px;
+}
+.imageContainerCenter>a>img {
+    width: 395px;
+    transition: .5s;
+}
+*/
