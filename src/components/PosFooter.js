@@ -9,4 +9,4 @@ const PosFooter = () => {
   );
 }
 
-export default PosFooter;
+export default React.memo(PosFooter);
