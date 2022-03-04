@@ -4,26 +4,33 @@ import style from"./styles/Tabs.module.css";
 const Tabs = ({groups, setDadosCard, listItens}) => {
   const [idGrupoSelecionado, setidGrupoSelecionado] = useState(groups[0].id); //Entrega o id da primeira posição do array
 
-  const mudarTabSelecionado = ({target}) => {
-    document.querySelectorAll('button').forEach(btn => btn.classList.remove(`${style.buttonAtivo}`));
-    target.classList.add(`${style.buttonAtivo}`);
-    setidGrupoSelecionado(target.id);
+  const mudarIdGrupoParaIdTabSelecionado = ({target}) => {
+    return setidGrupoSelecionado(target.id);
   }
-
+  
   React.useEffect(() => {
-    const filterArrayItensIdGrupo = (array) => {
+    const setItensCardsUsandoIdGrupoSelecionado = (array) => {
       return array.filter(item => item.grupos.includes(idGrupoSelecionado))
-    }
-    setDadosCard(filterArrayItensIdGrupo(listItens));
+    };
+    
+    let listItensCard = setItensCardsUsandoIdGrupoSelecionado(listItens);
+    listItensCard.sort((obj1, obj2) => {
+      console.log(idGrupoSelecionado);
+      if((obj1[idGrupoSelecionado] < obj2[idGrupoSelecionado])) return 1;
+      else if((obj1[idGrupoSelecionado] > obj2[idGrupoSelecionado])) return -1; 
+      return 0;
+    })
+    setDadosCard(listItensCard);
   }, [idGrupoSelecionado]);
 
   return (
     <div className={style.Tabs}>
+      {console.log("Refez o html")}
       {groups.map((group) => (
-        <button onClick={mudarTabSelecionado} key={group.id} id={group.id} className={group.id === idGrupoSelecionado ? style.buttonAtivo : ``}>{group.nome}</button>
+        <button onClick={mudarIdGrupoParaIdTabSelecionado} key={group.id} id={group.id} className={group.id === idGrupoSelecionado ? style.buttonAtivo : ``}>{group.nome}</button>
       ))}
     </div>
   )
 }
 
-export default Tabs;
+export default React.memo(Tabs); //A aplicação estava sendo recarregada duas vezes, uma pelo corpo e outra por sozinha, o memo evita q ela seja recarregada pelo corpo

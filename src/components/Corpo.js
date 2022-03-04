@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Cards from './corpoComponents/Cards';
 import Carrinho from './corpoComponents/Carrinho';
 import Tabs from './corpoComponents/Tabs';
 import './styles/Corpo.css';
@@ -41,28 +41,25 @@ const Corpo = () => {
   React.useEffect(() => {
     requisicaoGetApi(`https://sofalta.eu/api/v4/empreendimentos/lagoa/produtos/ingressos/ingressos?data=2022-04-16`);
   }, []);
-  if(dadosApi) console.log(dadosApi.grupos)
+
+
   if(error) return <div>{error}</div>
-  if(loading) return (<div>
-    <svg xmlns="http://www.w3.org/2000/svg" style={{margin: 'auto', background: '#fff', display: 'block'}} width="100px" height="100px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
-    <circle cx="50" cy="50" fill="none" stroke="#01549d" strokeWidth="10" r="35" strokeDasharray="164.93361431346415 56.97787143782138">
-      <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s" values="0 50 50;360 50 50" keyTimes="0;1"></animateTransform>
-    </circle>
-  </svg>
-    Carregando...
-  </div>)
+  if(loading && !itensCards) return (  //O loading só encerra quando os cards tiverem itens para ser exibidos
+    <div>
+      <svg xmlns="http://www.w3.org/2000/svg" style={{margin: 'auto', background: '#fff', display: 'block'}} width="100px" height="100px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+        <circle cx="50" cy="50" fill="none" stroke="#01549d" strokeWidth="10" r="35" strokeDasharray="164.93361431346415 56.97787143782138">
+          <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s" values="0 50 50;360 50 50" keyTimes="0;1"></animateTransform>
+        </circle>
+      </svg>
+      Carregando...
+    </div>)
   if(!dadosApi) return null;
   return (
     <section className='container-corpo-site'>
       <Carrinho />
-      <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Tabs groups={dadosApi.grupos} setDadosCard={setItensCard} listItens={dadosApi.itens} />}/>
-          </Routes>
-
-      </BrowserRouter>
-      
-      <div style={{height: '1500px'}}>e</div>
+      <Tabs groups={dadosApi.grupos} setDadosCard={setItensCard} listItens={dadosApi.itens} />
+      {console.log("refez o corpo")}
+      {itensCards && <Cards itens={itensCards} /> /** Evita chamar o componente duas vezes*/}
     </section>
   );
 }
