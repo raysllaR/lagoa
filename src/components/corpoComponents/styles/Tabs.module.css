@@ -1,4 +1,4 @@
-.container-nav-tabs {
+.Tabs {
   display: flex;
   max-width: 1200px;
   width: 100%;
@@ -13,7 +13,7 @@
   flex-basis: content;
 }
 
-.container-nav-tabs > button {
+.Tabs > button {
   min-height: 48px;
   background-color: #fff;
   color: #8a97a2;
@@ -27,12 +27,12 @@
   letter-spacing: 0.4px;
 }
 
-.container-nav-tabs > button:active {
+.Tabs > button:active {
   background-color: rgba(1, 84, 157, 0.2);
   transition: 0.2s;
 }
 
-.container-nav-tabs > .btn-ativo {
+.Tabs > .buttonAtivo {
   color: #01549d;
   box-shadow: inset 0px -3px 0px -1px #01549d;
 }

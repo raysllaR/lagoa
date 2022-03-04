@@ -1,4 +1,5 @@
 import React from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Carrinho from './corpoComponents/Carrinho';
 import Tabs from './corpoComponents/Tabs';
 import './styles/Corpo.css';
@@ -6,6 +7,7 @@ import './styles/Corpo.css';
 const Corpo = () => {
 
   const [dadosApi, setDadosApi] = React.useState(null);
+  const [itensCards, setItensCard] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState(null);
 
@@ -53,7 +55,13 @@ const Corpo = () => {
   return (
     <section className='container-corpo-site'>
       <Carrinho />
-      <Tabs groups={dadosApi.grupos}/>
+      <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Tabs groups={dadosApi.grupos} setDadosCard={setItensCard} listItens={dadosApi.itens} />}/>
+          </Routes>
+
+      </BrowserRouter>
+      
       <div style={{height: '1500px'}}>e</div>
     </section>
   );
