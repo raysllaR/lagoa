@@ -12,13 +12,10 @@ const Tabs = ({groups, setDadosCard, listItens}) => {
     const setItensCardsUsandoIdGrupoSelecionado = (array) => {
       return array.filter(item => item.grupos.includes(idGrupoSelecionado))
     };
-    
+
     let listItensCard = setItensCardsUsandoIdGrupoSelecionado(listItens);
     listItensCard.sort((obj1, obj2) => {
-      console.log(idGrupoSelecionado);
-      if((obj1[idGrupoSelecionado] < obj2[idGrupoSelecionado])) return 1;
-      else if((obj1[idGrupoSelecionado] > obj2[idGrupoSelecionado])) return -1; 
-      return 0;
+      return ((obj1[idGrupoSelecionado] > obj2[idGrupoSelecionado])) ? -1 : 1;
     })
     setDadosCard(listItensCard);
   }, [idGrupoSelecionado]);

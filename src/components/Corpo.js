@@ -5,7 +5,7 @@ import Tabs from './corpoComponents/Tabs';
 import './styles/Corpo.css';
 
 const Corpo = () => {
-
+  const [itensCarrinho, setItensCarrinho] = React.useState({});
   const [dadosApi, setDadosApi] = React.useState(null);
   const [itensCards, setItensCard] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
@@ -56,10 +56,9 @@ const Corpo = () => {
   if(!dadosApi) return null;
   return (
     <section className='container-corpo-site'>
-      <Carrinho />
+      <Carrinho itens={dadosApi.itens} itensCarrinho={itensCarrinho} />
       <Tabs groups={dadosApi.grupos} setDadosCard={setItensCard} listItens={dadosApi.itens} />
-      {console.log("refez o corpo")}
-      {itensCards && <Cards itens={itensCards} /> /** Evita chamar o componente duas vezes*/}
+      {itensCards && <Cards itens={itensCards} qtdParcelamentos={dadosApi.maximoQtdParcelamento} setItensCarrinho={setItensCarrinho} itensCarrinho={itensCarrinho} /> /** Evita chamar o componente duas vezes*/}
     </section>
   );
 }

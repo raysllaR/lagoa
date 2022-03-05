@@ -1,7 +1,7 @@
 import React from 'react';
 import './styles/Carrinho.css';
 
-const Carrinho = () => {
+const Carrinho = ({itensCarrinho, itens}) => {
   return (
     <div className="container-carrinho fechado">
       <div className="container-details-carrinho">
