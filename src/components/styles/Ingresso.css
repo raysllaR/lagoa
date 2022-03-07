@@ -1,0 +1,13 @@
+.container-corpo-site {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-left: 12px;
+    padding-right: 12px;
+    box-sizing: border-box;
+    flex-direction: column;
+    align-items: center;
+    transition: 0.9s;
+    transition-timing-function: linear;
+    opacity: 1;
+  }
