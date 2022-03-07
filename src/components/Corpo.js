@@ -5,7 +5,7 @@ import Tabs from './corpoComponents/Tabs';
 import './styles/Corpo.css';
 
 const Corpo = () => {
-  const [itensCarrinho, setItensCarrinho] = React.useState({});
+  const [itensCarrinho, setItensCarrinho] = React.useState([]);
   const [dadosApi, setDadosApi] = React.useState(null);
   const [itensCards, setItensCard] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
@@ -26,7 +26,11 @@ const Corpo = () => {
         throw "Não há engressos disponiveis para o dia selecionado!";
       }
 
-      setDadosApi(responseJson);   
+      setDadosApi(responseJson);
+      
+      if(localStorage.getItem('itensLista')){
+        setItensCarrinho(JSON.parse(localStorage.getItem('itensLista')));
+      }
       //objReturnFetch = await response.json();
       //createTabsAndContainerCards(objReturnFetch.grupos);
     }

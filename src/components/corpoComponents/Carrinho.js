@@ -2,6 +2,14 @@ import React from 'react';
 import './styles/Carrinho.css';
 
 const Carrinho = ({itensCarrinho, itens}) => {
+
+  if(itensCarrinho && itens){
+    
+
+
+  }
+
+
   return (
     <div className="container-carrinho fechado">
       <div className="container-details-carrinho">
