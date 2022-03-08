@@ -17,7 +17,7 @@ const Header = () => {
           </button>
         </div>
       </div> 
-      <a className={style.aLogoLagoa} href="#">
+      <a className={style.aLogoLagoa} href="/">
         <img src="https://sofalta.eu/meuingresso/public/lagoa/logos/logo-lagoa.svg" alt="Logo lagoa" />
       </a>
       <div className={style.divImgOnda}></div>

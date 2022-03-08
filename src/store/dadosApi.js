@@ -25,17 +25,24 @@ const slice = createSlice({
 
 });
 
-const { fetchStarted, fetchSucess, fetchError } = createSlice.actions;
+const { fetchStarted, fetchSucess, fetchError } = slice.actions;
 
-export const fetchGetDayIgressos = (day, atob) => async (dispatch) => {
+export const fetchGetDayIgressos = (day) => async (dispatch) => {
     try {
         dispatch(fetchStarted());
-        const response = await fetch(`https://sofalta.eu/api/v4/empreendimentos/lagoa/produtos/ingressos/ingressos?data=${atob(day)}`);
+
+        const response = await fetch(`https://sofalta.eu/api/v4/empreendimentos/lagoa/produtos/ingressos/ingressos?data=${day}`);
 
         const data = await response.json();
+
+        if(data.code == 404) throw data;
+
+        if(data.itens.length === 0) throw {code: 404, message: "Não há ingressos para o dia selecionado!"};
+
         return dispatch(fetchSucess(data));
     } catch (error) {
-        return dispatch(fetchError(error.message));
+        console.log("cai no erro")
+        return dispatch(fetchError(error));
     }
 }
 
