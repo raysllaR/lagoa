@@ -1,11 +1,10 @@
 import React from 'react';
-import Calendario from './Calendario';
-import Cards from './corpoComponents/Cards';
-import Carrinho from './corpoComponents/Carrinho';
-import Tabs from './corpoComponents/Tabs';
+import Cards from '../components/corpoComponents/Cards';
+import Carrinho from '../components/corpoComponents/Carrinho';
+import Tabs from '../components/corpoComponents/Tabs';
 import './styles/Ingresso.css';
 
-const Ingresso = () => {
+const Ingresso = ({date}) => {
   const [itensCarrinho, setItensCarrinho] = React.useState([]);
   const [dadosApi, setDadosApi] = React.useState(null);
   const [itensCards, setItensCard] = React.useState(null);
