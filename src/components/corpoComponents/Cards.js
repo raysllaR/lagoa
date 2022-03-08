@@ -1,7 +1,10 @@
 import React from 'react';
 import './styles/Cards.css';
 
-const Cards = ({itens, qtdParcelamentos, setItensCarrinho, itensCarrinho}) => {
+const Cards = ({itens, qtdParcelamentos, setItensCarrinho, itensCarrinho, date}) => {
+  let condicao = false;
+  let isEqualsValorOriginal = false;
+  
   const itemMaisVendido = (arrayGrupos, arraIdGruposMaisVendidos) => {
       return arrayGrupos.find(grupo => arraIdGruposMaisVendidos.includes(grupo));
   }
@@ -14,42 +17,42 @@ const Cards = ({itens, qtdParcelamentos, setItensCarrinho, itensCarrinho}) => {
     return value.toLocaleString("pt-BR", { minimumFractionDigits: 2 ,  currency: 'BRL' });
   }
 
-  let isEqualsValorOriginal = false;
-
-  const changeValueItemCardAndAddToCarrinho = (event, id, acao) => {
+  const changeValueItemCardAndAddToCarrinho = (event, item, acao) => {
     event.stopPropagation();
-
-    if(!itensCarrinho[id]){
-        setItensCarrinho({...itensCarrinho, [id]: 1});
+    let id = item.iditens;
+    
+    if(!itensCarrinho[id+date]){
+        setItensCarrinho({...itensCarrinho, [id+date]: {dateCompra: date, quantidade: 1, item: {...item}}});
         return
     } else {
         switch(acao){
             case 'add':
-                    ++itensCarrinho[id];
+                    itensCarrinho[id+date].quantidade++
                 break;
             case 'sub':
-                if(itensCarrinho[id] > 0) 
-                    --itensCarrinho[id]
-                if(itensCarrinho[id] === 0){
-                    delete itensCarrinho[id];
+                if(itensCarrinho[id+date].quantidade > 0) {
+                    itensCarrinho[id+date].quantidade--;
+                }
+                if(itensCarrinho[id+date].quantidade === 0){
+                    delete itensCarrinho[id+date];
                     setItensCarrinho({...itensCarrinho});
                     return;
                 }
                 break;
         }
 
-        setItensCarrinho({...itensCarrinho, [id]: itensCarrinho[id]});
+        setItensCarrinho({...itensCarrinho, [id+date]: {...itensCarrinho[id+date]}});
     }
   }
 
   const saveToLocaleString = (listItens) => {
-
     localStorage.setItem(`itensLista`, JSON.stringify(listItens));
   }
 
   return (
     <section className="cards">
         <div className='container-cards container-cards-ativo'>
+            {console.log("itens catinho ", itensCarrinho)}
             {itens.map((item, index) => (
                 <div key={item.iditens} className='card'>
                     {saveToLocaleString(itensCarrinho)}
@@ -83,11 +86,12 @@ const Cards = ({itens, qtdParcelamentos, setItensCarrinho, itensCarrinho}) => {
                                 <span className="regra-condicao">Regras e condições</span>
                             </div> 
                         </div>
-                        <div className={`container-btn-card ${(itensCarrinho[item.iditens] === 0 || !itensCarrinho[item.iditens]) && 'isComprar'}`}>
-                            <div className={`btn-comprar-card ${(itensCarrinho[item.iditens] === 0 || !itensCarrinho[item.iditens]) && 'isComprar'}`} onClick={(event) => changeValueItemCardAndAddToCarrinho(event, item.iditens, 'add')} id="${objDadosCard.id}">
-                                <div className={`btn btn-subtrair ${(itensCarrinho[item.iditens] === 0 || !itensCarrinho[item.iditens]) && 'isComprarBtn'}`} onClick={(event) => changeValueItemCardAndAddToCarrinho(event, item.iditens, 'sub')} id="${objDadosCard.id}">-</div>
-                                <span className="label-quantidade-produto" id="${objDadosCard.id}"> { (itensCarrinho[item.iditens] === 0 || !itensCarrinho[item.iditens]) ? 'Comprar' : itensCarrinho[item.iditens]}</span>
-                                <div className={`btn btn-adicionar ${(itensCarrinho[item.iditens] === 0 || !itensCarrinho[item.iditens]) && 'isComprarBtn'}`} onClick={(event) => changeValueItemCardAndAddToCarrinho(event, item.iditens, 'add')} id="${objDadosCard.id}">+</div>
+                        {condicao = !itensCarrinho[item.iditens+date]}
+                        <div className={`container-btn-card ${condicao && 'isComprar'}`}>
+                            <div className={`btn-comprar-card ${condicao && 'isComprar'}`} onClick={(event) => changeValueItemCardAndAddToCarrinho(event, item, 'add')} id="${objDadosCard.id}">
+                                <div className={`btn btn-subtrair ${condicao && 'isComprarBtn'}`} onClick={(event) => changeValueItemCardAndAddToCarrinho(event, item, 'sub')} id="${objDadosCard.id}">-</div>
+                                <span className="label-quantidade-produto" id="${objDadosCard.id}"> { condicao ? 'Comprar' : itensCarrinho[item.iditens+date].quantidade}</span>
+                                <div className={`btn btn-adicionar ${condicao && 'isComprarBtn'}`} onClick={(event) => changeValueItemCardAndAddToCarrinho(event, item, 'add')} id="${objDadosCard.id}">+</div>
                             </div>
                         </div>
                     </div>

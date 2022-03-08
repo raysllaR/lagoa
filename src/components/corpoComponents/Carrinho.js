@@ -2,25 +2,20 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './styles/Carrinho.css';
 
-const Carrinho = ({itensCarrinho, itens}) => {
-
-  if(itensCarrinho && itens){
-    
-
-
-  }
-
+const Carrinho = ({itensCarrinho, itens, date}) => {
+  let [ yy, mm, dd ] = date.split('-'); 
+  mm = new Date(date).toLocaleString('default', {month: 'long'});
 
   return (
     <div className="container-carrinho fechado">
       <div className="container-details-carrinho">
         <div className="details-carrinho">
           <div className="container-data-carrinho">
-          <div className="dia-data-carrinho full">25</div>
+          <div className="dia-data-carrinho full">{dd}</div>
           <div className="separador-data-carrinho full"></div>
           <div className="conainer-mes-ano-carrinho">
-            <div className="mes-data-carrinho full">fevereiro</div>
-            <div className="ano-mes-carrinhos">de 2022</div>
+            <div className="mes-data-carrinho full">{mm}</div>
+            <div className="ano-mes-carrinhos">de {yy}</div>
           </div>
           </div>
           <div className="container-itens-carrinho">

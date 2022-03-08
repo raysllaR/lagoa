@@ -1,6 +1,5 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
 import Cards from '../components/corpoComponents/Cards';
 import Carrinho from '../components/corpoComponents/Carrinho';
 import Loading from '../components/corpoComponents/Loading';
@@ -9,7 +8,10 @@ import Tabs from '../components/corpoComponents/Tabs';
 import { fetchGetDayIgressos } from '../store/dadosApi';
 import './styles/Corpo.css';
 
-const Corpo = ({date}) => {
+const Corpo = () => {
+
+  //TODO: mudar a forma como os itens do carrinho são salvos! E selecionar o dia da compra!
+
   const [itensCarrinho, setItensCarrinho] = React.useState([]);
   const [dadosApi, setDadosApi] = React.useState(null);
   const [itensCards, setItensCard] = React.useState(null);
@@ -17,18 +19,29 @@ const Corpo = ({date}) => {
   const [error, setError] = React.useState(null);
   const dispatch = useDispatch();
   const state = useSelector(state => state);
+  const [ date, setDate ] = React.useState(null);
 
   const callDispatch = async (date) => {
-    
-    const data = await dispatch(fetchGetDayIgressos(date.split('-').reverse().join('-')));
+    date = date.split('-').reverse().join('-');
+    setDate(date)
+    const data = await dispatch(fetchGetDayIgressos(date));
     
     if(data.payload.message != null) return setError(data.payload);
     if(data.payload != null) return setDadosApi(data.payload);
   }
 
   React.useEffect(() => {
-    const date = window.atob(window.location.href.split('http://localhost:3000/lagoa/#/ingressos/')[1]);
-    callDispatch(date)
+    let dataSelecionada = window.atob(window.location.href.split('http://localhost:3000/lagoa/#/ingressos/')[1])
+    callDispatch(dataSelecionada);
+
+    try{
+      if(localStorage.getItem('itensLista')){
+        setItensCarrinho(JSON.parse(localStorage.getItem('itensLista')));
+      }
+    }catch(e){
+      localStorage.setItem('itensLista', []);
+      setItensCard({});
+    }
   }, []);
 
   React.useEffect(() => {
@@ -42,9 +55,9 @@ const Corpo = ({date}) => {
   if(!dadosApi) return null;
   return (
     <section className='container-corpo-site'>
-      <Carrinho itens={dadosApi.itens} itensCarrinho={itensCarrinho} />
+      <Carrinho itens={dadosApi.itens} itensCarrinho={itensCarrinho} date={date} />
       <Tabs groups={dadosApi.grupos} setDadosCard={setItensCard} listItens={dadosApi.itens} />
-      {itensCards && <Cards itens={itensCards} qtdParcelamentos={dadosApi.maximoQtdParcelamento} setItensCarrinho={setItensCarrinho} itensCarrinho={itensCarrinho} /> /** Evita chamar o componente duas vezes*/}
+      {itensCards && <Cards itens={itensCards} qtdParcelamentos={dadosApi.maximoQtdParcelamento} setItensCarrinho={setItensCarrinho} itensCarrinho={itensCarrinho} date={date} /> /** Evita chamar o componente duas vezes*/}
     </section>    
   );
 }

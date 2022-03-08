@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
 import style from "./styles/Header.module.css";
 
 const Header = () => {
@@ -17,9 +18,9 @@ const Header = () => {
           </button>
         </div>
       </div> 
-      <a className={style.aLogoLagoa} href="/">
+      <Link className={style.aLogoLagoa} to="/">
         <img src="https://sofalta.eu/meuingresso/public/lagoa/logos/logo-lagoa.svg" alt="Logo lagoa" />
-      </a>
+      </Link>
       <div className={style.divImgOnda}></div>
     </header> 
   )
