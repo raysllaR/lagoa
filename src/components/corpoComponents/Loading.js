@@ -1,11 +1,11 @@
 import React from 'react';
-import './styles/Loading.css';
+import style from './styles/Loading.module.css';
 
 const Loading = () => {
   return (
-    <div className='Loading'>
-      <span className='loader'></span>
-      <span className='text'>Carregando...</span>
+    <div className={style.Loading}>
+      <span className={style.loader}></span>
+      <span className={style.text}>Carregando...</span>
     </div>
   )
 }
