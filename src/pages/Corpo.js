@@ -86,7 +86,7 @@ const Corpo = () => {
 
   return (
     <section className='container-corpo-site'>
-      <Carrinho itens={dadosApi.itens} itensCarrinho={itensCarrinho} date={date} groups={dadosApi.grupos} idGrupoSelecionado={idGrupoSelecionado} setIdGrupoSelecionado={setIdGrupoSelecionado} buttonCompraText={buttonCompraText} setButtonCompraText={setButtonCompraText} />
+      <Carrinho itens={dadosApi.itens} itensCarrinho={itensCarrinho} date={date} groups={dadosApi.grupos} idGrupoSelecionado={idGrupoSelecionado} setIdGrupoSelecionado={setIdGrupoSelecionado} buttonCompraText={buttonCompraText} setButtonCompraText={setButtonCompraText} setItensCarrinho={setItensCarrinho} />
       <Tabs groups={dadosApi.grupos} setDadosCard={setItensCard} listItens={dadosApi.itens} idGrupoSelecionado={idGrupoSelecionado} setIdGrupoSelecionado={setIdGrupoSelecionado} />
       {itensCards && <Cards itens={itensCards} qtdParcelamentos={dadosApi.maximoQtdParcelamento} setItensCarrinho={setItensCarrinho} itensCarrinho={itensCarrinho} date={date} /> /** Evita chamar o componente duas vezes*/}
     </section>    

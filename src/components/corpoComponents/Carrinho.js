@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './styles/Carrinho.css';
 
-const Carrinho = ({itensCarrinho, itens, date, groups, idGrupoSelecionado, setIdGrupoSelecionado, buttonCompraText, setButtonCompraText}) => {
+const Carrinho = ({itensCarrinho, itens, date, groups, idGrupoSelecionado, setIdGrupoSelecionado, buttonCompraText, setButtonCompraText, setItensCarrinho}) => {
   let [ yy, mm, dd ] = date.split('-'); 
   mm = new Date(date).toLocaleString('default', {month: 'long'});
 
@@ -19,11 +19,20 @@ const Carrinho = ({itensCarrinho, itens, date, groups, idGrupoSelecionado, setId
       if(groups.length -1 > indexOf){
         setIdGrupoSelecionado(groups[indexOf+1].id)
       }
-
   }
 
+  const excluirItemCarrinho = (event) => {
+    event.stopPropagation()
+    console.log("To funcionando ", event.target.getAttribute('value'))
+    delete itensCarrinho[event.target.getAttribute('value')]
+    setItensCarrinho({...itensCarrinho})
+  }
+
+  //TODO: implementar lista de itens no carrinho
+  //TODO: mudar a setinha de direção quando clicar no para abrir o carrinho
+  
+
   React.useEffect(()=>{
-    console.log("lgth ", Object.keys(itensCarrinho).length === 0)
     if(Object.keys(itensCarrinho).length === 0){
       document.querySelectorAll('.btn-carrinho-next').forEach(item => item.setAttribute("disabled", "disabled"));
       
@@ -36,6 +45,52 @@ const Carrinho = ({itensCarrinho, itens, date, groups, idGrupoSelecionado, setId
 
       contador.innerText = keys.reduce( (soma, key) => { return soma + itensCarrinho[key].quantidade }, 0);
     });
+
+    const keys = Object.keys(itensCarrinho);
+
+    if( keys.length === 0){
+      
+      document.querySelector('.lista-produtos-carrinho').innerHTML = 'Nenhum produto adicionado ao carrinho'
+    } else{
+      if(document.querySelector('.lista-produtos-carrinho').innerText === 'Nenhum produto adicionado ao carrinho') document.querySelector('.lista-produtos-carrinho').innerHTML = '';
+
+      
+      const newProdutosListaCarrinho = document.createElement('div');
+      newProdutosListaCarrinho.classList.add('produto-lista-carrinho')
+      newProdutosListaCarrinho.setAttribute('id', itensCarrinho)
+
+      Object.keys(itensCarrinho).forEach(key => {
+        console.log("KEY " + itensCarrinho[key].item.iditens)
+        let item = false; 
+        document.querySelectorAll('.nome-produto-lista-produtos-carrinho').forEach(itemArray => {
+          item = (itemArray.getAttribute('value') == key)
+        })
+
+        console.log("ITEMMMM ", item)
+
+        if(item){
+          console.log("Já existe")
+        }
+
+        newProdutosListaCarrinho.innerHTML = `
+        <div class="nome-produto-lista-produtos-carrinho" value=${key}>new produto</div>
+          <div class="container-qtde-e-valor-produto">
+          <div class="qtde-produto-lista-produtos-carrinho" iditem="0">${itensCarrinho[key].quantidade}x</div>
+          <div class="valor-produto-lista-produtos-carrinho" iditem="0">20</div>
+          <svg class ="icon-excluir-item-lista-produtos-carrinho" value=${key} iditem="0" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+        </div>
+        `
+      });
+
+      
+     
+
+    document.querySelector('.lista-produtos-carrinho').appendChild(newProdutosListaCarrinho)
+  }
+
+  document.querySelectorAll('.icon-excluir-item-lista-produtos-carrinho').forEach(item => item.addEventListener('click', excluirItemCarrinho));
+
+    
   }, [itensCarrinho]);
 
   const openCarrinho = ({target}) => {
@@ -44,6 +99,7 @@ const Carrinho = ({itensCarrinho, itens, date, groups, idGrupoSelecionado, setId
     const divContainerBtnCarrinho = document.querySelector('.container-btn-carrinho');
 
     if(divCarrinho.classList.contains('fechado')){
+      document.querySelector('#tabs').style.marginTop = '200px';
       divCarrinho.classList.remove('fechado');
       divCarrinho.classList.add('aberto'); 
       divListaProdutosCarrinho.classList.add('aberto');
@@ -54,6 +110,7 @@ const Carrinho = ({itensCarrinho, itens, date, groups, idGrupoSelecionado, setId
         divContainerBtnCarrinho.style.display = 'none'
       }
     } else {
+      document.querySelector('#tabs').style.marginTop = '10px';
       if(divContainerBtnCarrinho.classList.contains('aberto-com-produtos')){
         divContainerBtnCarrinho.classList.remove('aberto-com-produtos');
         divContainerBtnCarrinho.classList.add('fechado')

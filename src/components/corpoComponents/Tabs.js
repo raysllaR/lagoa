@@ -25,8 +25,7 @@ const Tabs = ({groups, setDadosCard, listItens, idGrupoSelecionado, setIdGrupoSe
   }, [idGrupoSelecionado]);
 
   return (
-    <div className={style.Tabs}>
-      {console.log("Refez o html")}
+    <div className={style.Tabs} id="tabs">
       {groups.map((group) => (
         <button onClick={mudarIdGrupoParaIdTabSelecionado} key={group.id} id={group.id} className={group.id === idGrupoSelecionado ? style.buttonAtivo : ``}>{group.nome}</button>
       ))}
