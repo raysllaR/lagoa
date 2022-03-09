@@ -6,6 +6,7 @@ import Corpo from './pages/Corpo';
 import PosFooter from './components/PosFooter';
 import Calendario from './pages/Calendario';
 import "./App.css";
+import Login from './pages/Login';
 
 const App = () => {
   return (
@@ -16,6 +17,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Calendario />} />
           <Route path="/:url" element={<Corpo />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
 
         <Footer />
