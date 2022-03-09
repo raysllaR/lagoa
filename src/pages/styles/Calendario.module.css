@@ -1,0 +1,88 @@
+.Calendario {
+    display: flex !important;
+    justify-content: center;
+    padding-top: 25px;
+    padding-bottom: 50px;
+}
+
+.Calendario .container{
+    width: 1200px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height:584px;
+    border-radius: 13px;
+    box-shadow: rgb(211 217 223) 0px 6px 17px;
+    padding-top: 20px;
+}
+
+.Calendario .container .titulo{
+    font-size: 1.65em;
+    font-weight: 500;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    color: rgb(1, 84, 157);
+    text-align: center;
+    padding: 0px 15px;
+    box-sizing: border-box;
+}
+
+.Calendario .container h2 {
+    font-size: 1.2em;
+    color: rgb(90, 108, 124);
+    font-weight: 400;
+    margin: 0px;
+    margin-top: 15px;
+    text-align: center;
+    padding: 6px 0px 10px;
+    margin-bottom: 5px;
+}
+
+.Calendario .container p {
+    color: rgb(90, 108, 124);
+    font-size: 1em;
+    margin: 0px 0px 5px;
+    text-align: center;
+    padding: 0px 15px;
+    box-sizing: border-box;
+}
+
+.Calendario .container .fazerAgora{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 35px;
+}
+
+.Calendario .container .fazerAgora .buttons{
+    color: #01549D;
+    background-color: #e5f3ff;
+    height: 85px;
+    width: 110px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin: 5px;
+    flex-direction: column;
+    cursor: pointer;
+    border-radius: 13px;
+    padding: 5px;
+    box-sizing: border-box;
+    transition: .2s ease;
+}
+
+.Calendario .container .fazerAgora .buttons .text{
+    display: flex;
+    font-size: 0.85rem;
+    text-align: center;
+    transition: .2s ease;
+    align-items: center;
+    justify-content: center;
+}
+
+.Calendario .container .fazerAgora .buttons svg{
+    width: 26px;
+    height: 26px;
+}
