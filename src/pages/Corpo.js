@@ -17,9 +17,11 @@ const Corpo = () => {
   const [itensCards, setItensCard] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState(null);
+  const [idGrupoSelecionado, setIdGrupoSelecionado] = React.useState(null); 
   const dispatch = useDispatch();
   const state = useSelector(state => state);
   const [ date, setDate ] = React.useState(null);
+  const [ buttonCompraText, setButtonCompraText ] = React.useState('Próximo passo');
 
   const callDispatch = async (date) => {
     date = date.split('-').reverse().join('-');
@@ -45,18 +47,47 @@ const Corpo = () => {
   }, []);
 
   React.useEffect(() => {
+   if( dadosApi != null && dadosApi.grupos !== null && idGrupoSelecionado != null){
+      let indexOf;
+
+      dadosApi.grupos.findIndex((group, index) => {
+        console.log("?? ", group.id == idGrupoSelecionado)
+        console.log("INDEX INSIDE ", index)
+        if(group.id == idGrupoSelecionado) indexOf = index
+      })
+
+      console.log("INDEX OF OFF, ", indexOf)
+
+
+      if(indexOf == dadosApi.grupos.length - 1 ){
+        setButtonCompraText("Finalizar Compra")
+      } else setButtonCompraText('Próximo passo');
+
+      /*if(indexOf == dadosApi.groups.length - 2){
+        setButtonCompraText("Finalizar Compra")
+      } else{
+        if(buttonCompraText == "Finalizar Compra")
+          setButtonCompraText('Próximo passo')
+      }*/
+
+
+   }
+  }, [buttonCompraText, dadosApi, idGrupoSelecionado])
+
+  React.useEffect(() => {
     if(state.fetchGetApiIngressos.loading != null)
       setLoading(state.fetchGetApiIngressos.loading);
   }, [state]);
 
 
-  if(error) return  <MessageError error={error} />
-  if(loading && !itensCards) return <Loading />  //O loading só encerra quando os cards tiverem itens para ser exibidos
+  if(state.fetchGetApiIngressos.error) return  <MessageError error={error} />
+  if(state.fetchGetApiIngressos.loading && !itensCards) return <Loading />  //O loading só encerra quando os cards tiverem itens para ser exibidos
   if(!dadosApi) return null;
+
   return (
     <section className='container-corpo-site'>
-      <Carrinho itens={dadosApi.itens} itensCarrinho={itensCarrinho} date={date} />
-      <Tabs groups={dadosApi.grupos} setDadosCard={setItensCard} listItens={dadosApi.itens} />
+      <Carrinho itens={dadosApi.itens} itensCarrinho={itensCarrinho} date={date} groups={dadosApi.grupos} idGrupoSelecionado={idGrupoSelecionado} setIdGrupoSelecionado={setIdGrupoSelecionado} buttonCompraText={buttonCompraText} setButtonCompraText={setButtonCompraText} />
+      <Tabs groups={dadosApi.grupos} setDadosCard={setItensCard} listItens={dadosApi.itens} idGrupoSelecionado={idGrupoSelecionado} setIdGrupoSelecionado={setIdGrupoSelecionado} />
       {itensCards && <Cards itens={itensCards} qtdParcelamentos={dadosApi.maximoQtdParcelamento} setItensCarrinho={setItensCarrinho} itensCarrinho={itensCarrinho} date={date} /> /** Evita chamar o componente duas vezes*/}
     </section>    
   );

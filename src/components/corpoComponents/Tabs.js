@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
 import style from"./styles/Tabs.module.css";
 
-const Tabs = ({groups, setDadosCard, listItens}) => {
-  const [idGrupoSelecionado, setidGrupoSelecionado] = useState(groups[0].id); //Entrega o id da primeira posição do array
+const Tabs = ({groups, setDadosCard, listItens, idGrupoSelecionado, setIdGrupoSelecionado}) => {
+   //Entrega o id da primeira posição do array
 
   const mudarIdGrupoParaIdTabSelecionado = ({target}) => {
-    return setidGrupoSelecionado(target.id);
+    return setIdGrupoSelecionado(target.id);
   }
   
+  React.useEffect(() => {
+    setIdGrupoSelecionado(groups[0].id)
+  }, []);
+
   React.useEffect(() => {
     const setItensCardsUsandoIdGrupoSelecionado = (array) => {
       return array.filter(item => item.grupos.includes(idGrupoSelecionado))

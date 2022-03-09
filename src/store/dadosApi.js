@@ -41,7 +41,6 @@ export const fetchGetDayIgressos = (day) => async (dispatch) => {
 
         return dispatch(fetchSucess(data));
     } catch (error) {
-        console.log("cai no erro")
         return dispatch(fetchError(error));
     }
 }
