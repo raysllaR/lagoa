@@ -134,7 +134,7 @@ const Carrinho = ({itensCarrinho, itens, date, groups, idGrupoSelecionado, setId
     const divDetailsCarrinho = document.querySelector('.details-carrinho');
     window.addEventListener('scroll', function(){
       const distanciaDoElementoAoTop = -2;
-      divCarrinhoFull.style.top = divDetailsCarrinho.getBoundingClientRect().top <= distanciaDoElementoAoTop ? 0 : '-90px'
+      divCarrinhoFull.style.top = divDetailsCarrinho.getBoundingClientRect().top + document.querySelector('.container-carrinho').clientHeight - 120 <= distanciaDoElementoAoTop ? 0 : '-90px'
     });
   }, []);
 
