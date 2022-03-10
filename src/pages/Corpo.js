@@ -6,11 +6,9 @@ import Loading from '../components/corpoComponents/Loading';
 import MessageError from '../components/corpoComponents/MessageError';
 import Tabs from '../components/corpoComponents/Tabs';
 import { fetchGetDayIgressos } from '../store/dadosApi';
-import './styles/Corpo.css';
+import style from './styles/Corpo.module.css';
 
 const Corpo = () => {
-
-  //TODO: mudar a forma como os itens do carrinho são salvos! E selecionar o dia da compra!
 
   const [itensCarrinho, setItensCarrinho] = React.useState([]);
   const [dadosApi, setDadosApi] = React.useState(null);
@@ -51,26 +49,13 @@ const Corpo = () => {
       let indexOf;
 
       dadosApi.grupos.findIndex((group, index) => {
-        console.log("?? ", group.id == idGrupoSelecionado)
-        console.log("INDEX INSIDE ", index)
         if(group.id == idGrupoSelecionado) indexOf = index
       })
-
-      console.log("INDEX OF OFF, ", indexOf)
 
 
       if(indexOf == dadosApi.grupos.length - 1 ){
         setButtonCompraText("Finalizar Compra")
       } else setButtonCompraText('Próximo passo');
-
-      /*if(indexOf == dadosApi.groups.length - 2){
-        setButtonCompraText("Finalizar Compra")
-      } else{
-        if(buttonCompraText == "Finalizar Compra")
-          setButtonCompraText('Próximo passo')
-      }*/
-
-
    }
   }, [buttonCompraText, dadosApi, idGrupoSelecionado])
 
@@ -85,7 +70,7 @@ const Corpo = () => {
   if(!dadosApi) return null;
 
   return (
-    <section className='container-corpo-site'>
+    <section className={style.ContainerCorpoSite}>
       <Carrinho itens={dadosApi.itens} itensCarrinho={itensCarrinho} date={date} groups={dadosApi.grupos} idGrupoSelecionado={idGrupoSelecionado} setIdGrupoSelecionado={setIdGrupoSelecionado} buttonCompraText={buttonCompraText} setButtonCompraText={setButtonCompraText} setItensCarrinho={setItensCarrinho} />
       <Tabs groups={dadosApi.grupos} setDadosCard={setItensCard} listItens={dadosApi.itens} idGrupoSelecionado={idGrupoSelecionado} setIdGrupoSelecionado={setIdGrupoSelecionado} />
       {itensCards && <Cards itens={itensCards} qtdParcelamentos={dadosApi.maximoQtdParcelamento} setItensCarrinho={setItensCarrinho} itensCarrinho={itensCarrinho} date={date} /> /** Evita chamar o componente duas vezes*/}
