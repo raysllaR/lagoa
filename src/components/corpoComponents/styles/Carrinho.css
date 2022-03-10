@@ -334,3 +334,14 @@
     cursor: auto;
     background-color: #c4cdd4;
   }
+
+  @media (max-width: 450px) {
+    .container-btn-carrinho {
+      flex-direction: column;
+      flex-basis: content;
+    }
+    .btn-carrinho {
+      margin-bottom: 8px;
+      height: 45px;
+    }
+  }

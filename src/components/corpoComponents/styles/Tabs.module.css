@@ -8,9 +8,10 @@
   border-radius: 8px;
   box-shadow: #d3d9df 0px 6px 17px;
   align-items: center;
-  overflow: hidden;
+  overflow-x: scroll;
   transition: 0.2s;
   flex-basis: content;
+  white-space: nowrap;
 }
 
 .Tabs > button {

@@ -102,4 +102,4 @@ const Cards = ({itens, qtdParcelamentos, setItensCarrinho, itensCarrinho, date})
   )
 }
 
-export default Cards
+export default Cards;

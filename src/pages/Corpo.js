@@ -64,6 +64,15 @@ const Corpo = () => {
       setLoading(state.fetchGetApiIngressos.loading);
   }, [state]);
 
+  const changeTextButtonOutroDia = () => {
+ 
+    document.querySelector('.outro-dia').innerText = (window.innerWidth < 546) ? "Outro dia" : "Comprar para outro dia";
+  }
+  React.useEffect(()=>{
+    //TODO: alterar como ta pegando o tamanho da tela
+    window.addEventListener('resize', changeTextButtonOutroDia);
+    
+  }, []);
 
   if(state.fetchGetApiIngressos.error) return  <MessageError error={error} />
   if(state.fetchGetApiIngressos.loading && !itensCards) return <Loading />  //O loading só encerra quando os cards tiverem itens para ser exibidos

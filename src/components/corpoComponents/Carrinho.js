@@ -160,9 +160,11 @@ const Carrinho = ({itensCarrinho, itens, date, groups, idGrupoSelecionado, setId
           <div className="lista-produtos-carrinho fechado"><span className="nenhum-produto">Nenhum produto adicionado ao carrinho</span></div>
         </div>
         <div className="container-btn-carrinho fechado">
-            <Link to='/' className="btn-carrinho btn-carrinho-buy-other-day" onClick={(event) => event.stopPropagation()}>Comprar para outro dia
+          <button className="btn-carrinho btn-carrinho-buy-other-day" onClick={(event) => {event.stopPropagation(); window.location.href="/"}}>
+              <span className='outro-dia'>Comprar para outro dia</span>
               <svg stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" style={{width: '17px', height: '17px', marginRight: '5px'}} height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-            </Link>
+            
+          </button>
           <button className="btn-carrinho btn-carrinho-next" onClick={next} >{buttonCompraText}
             <svg stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" style={{width: '21px', height: '21px', marginTop: '2px'}} height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
           </button>
