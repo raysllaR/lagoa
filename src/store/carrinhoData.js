@@ -1,25 +1,24 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const slice = createSlice({
-    name: 'carrinho',
-    initialState: {
-        open: false,
-        value: '0,00',
-        quantidade: '0',
-        date: {
-            year: '',
-            month: '',
-            day: ''
-        },
-        listItens: {
-
-        }
+  name: 'carrinho',
+  initialState: {
+    open: false,
+    value: '0,00',
+    quantidade: '0',
+    date: {
+      year: '',
+      month: '',
+      day: '',
     },
-    reducers: {
-        openCarrinho: (state) => state.open = true,
-        closeCarrinho: (state) => state.open = false,
-    }
+    listItens: {},
+  },
+  reducers: {
+    openOrCloseCarrinho: (state) => {
+      state.open = !state.open;
+    },
+  },
 });
 
-export const { openCarrinho, closeCarrinho } = slice.actions;
+export const { openOrCloseCarrinho } = slice.actions;
 export default slice.reducer;

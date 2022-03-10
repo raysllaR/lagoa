@@ -1,10 +1,13 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { openOrCloseCarrinho } from '../../store/carrinhoData';
 import './styles/Carrinho.css';
 
 const Carrinho = ({itensCarrinho, itens, date, groups, idGrupoSelecionado, setIdGrupoSelecionado, buttonCompraText, setButtonCompraText, setItensCarrinho}) => {
   let [ yy, mm, dd ] = date.split('-'); 
   mm = new Date(date).toLocaleString('default', {month: 'long'});
-  const [ openClosedCarrinho, setOpenClosedCarrinho ] = React.useState('close');
+  const state = useSelector(state => state);
+  const dispatch = useDispatch();
 
   const next = (event) => {
     event.stopPropagation()
@@ -30,7 +33,7 @@ const Carrinho = ({itensCarrinho, itens, date, groups, idGrupoSelecionado, setId
 
     delete itensCarrinho[event.target.getAttribute('value')]
     if((Object.keys(itensCarrinho).length === 0)){
-      setOpenClosedCarrinho('close');
+      dispatch(openOrCloseCarrinho());
     }
     setItensCarrinho({...itensCarrinho})
   }
@@ -99,8 +102,8 @@ const Carrinho = ({itensCarrinho, itens, date, groups, idGrupoSelecionado, setId
     
     setasCarrinho.forEach(seta => seta.classList.toggle('para-cima'));
 
-    switch(openClosedCarrinho){
-      case 'open':
+    switch(state.carrinho.open){
+      case true:
         if(divCarrinho.classList.contains('fechado')){
           document.querySelector('#tabs').style.marginTop = '200px';
           divCarrinho.classList.remove('fechado');
@@ -114,7 +117,7 @@ const Carrinho = ({itensCarrinho, itens, date, groups, idGrupoSelecionado, setId
           }
         }
         break;
-        case 'close':
+        case false:
           document.querySelector('#tabs').style.marginTop = '10px';
           if(divContainerBtnCarrinho.classList.contains('aberto-com-produtos')){
             divContainerBtnCarrinho.classList.remove('aberto-com-produtos');
@@ -127,7 +130,7 @@ const Carrinho = ({itensCarrinho, itens, date, groups, idGrupoSelecionado, setId
           divCarrinho.classList.add('fechado'); 
           break;
     }
-  }, [openClosedCarrinho]);
+  }, [state.carrinho.open]);
 
   React.useEffect(() => {
     const divCarrinhoFull = document.querySelector('.details-carrinho-full');
@@ -139,7 +142,13 @@ const Carrinho = ({itensCarrinho, itens, date, groups, idGrupoSelecionado, setId
   }, []);
 
   return (
-    <div className="container-carrinho fechado" onClick={() => setOpenClosedCarrinho( (openClosedCarrinho == 'close') ? 'open' : 'close' )}>
+    <div className="container-carrinho fechado" onClick={() =>{ 
+        
+        dispatch(openOrCloseCarrinho());
+        
+        console.log("STATE ", state)
+      }
+    }>
       <div className="container-details-carrinho">
         <div className="details-carrinho">
           <div className="container-data-carrinho">

@@ -1,8 +1,7 @@
 import React from 'react';
-import "./corpoComponents/styles/Carrinho.css";
+import './corpoComponents/styles/Carrinho.css';
 
 const CarrinhoTop = () => {
-
   return (
     <div className="details-carrinho-full">
       <div className="container-data-carrinho">
@@ -17,7 +16,18 @@ const CarrinhoTop = () => {
         <div className="word-total-carrinho">Total</div>
         <div className="container-valor-carrinho">
           <div className="container-icon-carrinho">
-            <svg stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" style={{width: '27px', height: '27px'}} height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+            <svg
+              stroke="currentColor"
+              fill="none"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              style={{ width: '27px', height: '27px' }}
+              height="1em"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
               <circle cx="9" cy="21" r="1"></circle>
               <circle cx="20" cy="21" r="1"></circle>
               <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
@@ -30,12 +40,28 @@ const CarrinhoTop = () => {
           </div>
         </div>
         <div className="container-detail-botton-carrinho">
-          <svg className="seta-carrinho para-baixo para-cima" stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 24 24" style={{color: 'rgb(90, 108, 124)', width: '25px', height: '25px'}} height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"></path></svg>
+          <svg
+            className="seta-carrinho para-baixo para-cima"
+            stroke="currentColor"
+            fill="currentColor"
+            strokeWidth="0"
+            viewBox="0 0 24 24"
+            style={{
+              color: 'rgb(90, 108, 124)',
+              width: '25px',
+              height: '25px',
+            }}
+            height="1em"
+            width="1em"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"></path>
+          </svg>
           <div className="detail-botton-carrinho"></div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default CarrinhoTop;

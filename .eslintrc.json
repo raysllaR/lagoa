@@ -1,0 +1,26 @@
+{
+    "env": {
+        "browser": true,
+        "commonjs": true,
+        "es2021": true
+    },
+    "extends": [
+        "plugin:react/recommended",
+        "airbnb"
+    ],
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": false
+        },
+        "ecmaVersion": "latest"
+    },
+    "plugins": [
+        "react"
+    ],
+    "rules": {
+        "no-confusing-arrow": [
+            "error",
+            { "allowParens": true, "onlyOneSimpleParam": false }
+        ]
+    }
+}
