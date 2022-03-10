@@ -1,7 +1,7 @@
 .details-carrinho-full {
     display: flex;
     position: fixed;
-    top: 90px;
+    top: -90px;
     justify-content: space-between;
     align-items: center;
     width: 100%;
@@ -12,7 +12,7 @@
     transition: all 0.4s ease-in-out 0s;
     box-shadow: rgb(211, 217, 223) 0px 0px 17px;
     overflow: hidden;
-    opacity: 0;
+    opacity: 1;
   }
   
   .container-carrinho.fechado {

@@ -27,8 +27,7 @@ const Carrinho = ({itensCarrinho, itens, date, groups, idGrupoSelecionado, setId
 
   const excluirItemCarrinho = (event) => {
     event.stopPropagation();
-    console.log("CLicando")
-    console.log(event.target.getAttribute('value'))
+
     delete itensCarrinho[event.target.getAttribute('value')]
     if((Object.keys(itensCarrinho).length === 0)){
       setOpenClosedCarrinho('close');
@@ -129,6 +128,15 @@ const Carrinho = ({itensCarrinho, itens, date, groups, idGrupoSelecionado, setId
           break;
     }
   }, [openClosedCarrinho]);
+
+  React.useEffect(() => {
+    const divCarrinhoFull = document.querySelector('.details-carrinho-full');
+    const divDetailsCarrinho = document.querySelector('.details-carrinho');
+    window.addEventListener('scroll', function(){
+      const distanciaDoElementoAoTop = -2;
+      divCarrinhoFull.style.top = divDetailsCarrinho.getBoundingClientRect().top <= distanciaDoElementoAoTop ? 0 : '-90px'
+    });
+  }, []);
 
   return (
     <div className="container-carrinho fechado" onClick={() => setOpenClosedCarrinho( (openClosedCarrinho == 'close') ? 'open' : 'close' )}>

@@ -44,6 +44,8 @@ const Corpo = () => {
     }
   }, []);
 
+ 
+
   React.useEffect(() => {
    if( dadosApi != null && dadosApi.grupos !== null && idGrupoSelecionado != null){
       let indexOf;

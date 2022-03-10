@@ -2,6 +2,7 @@ import React from 'react';
 import "./corpoComponents/styles/Carrinho.css";
 
 const CarrinhoTop = () => {
+
   return (
     <div className="details-carrinho-full">
       <div className="container-data-carrinho">
@@ -29,7 +30,7 @@ const CarrinhoTop = () => {
           </div>
         </div>
         <div className="container-detail-botton-carrinho">
-          <svg className="seta-carrinho para-baixo" stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 24 24" style={{color: 'rgb(90, 108, 124)', width: '25px', height: '25px'}} height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"></path></svg>
+          <svg className="seta-carrinho para-baixo para-cima" stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 24 24" style={{color: 'rgb(90, 108, 124)', width: '25px', height: '25px'}} height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"></path></svg>
           <div className="detail-botton-carrinho"></div>
         </div>
       </div>
