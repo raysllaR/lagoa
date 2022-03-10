@@ -7,13 +7,14 @@ import PosFooter from './components/PosFooter';
 import Calendario from './pages/Calendario';
 import "./App.css";
 import Login from './pages/Login';
+import CarrinhoTop from './components/CarrinhoTop';
 
 const App = () => {
   return (
     <React.Fragment>
       <BrowserRouter>
         <Header />
-        
+        <CarrinhoTop />
         <Routes>
           <Route path="/" element={<Calendario />} />
           <Route path="/:url" element={<Corpo />} />

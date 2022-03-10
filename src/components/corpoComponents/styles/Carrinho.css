@@ -256,6 +256,17 @@
   .seta-carrinho.para-cima {
     animation: 0.4s 0s infinite alternate animacao-seta-carrinho-cima;
   }
+
+  @keyframes animacao-seta-carrinho-cima {
+    from {
+      transform: translateY(-5px) rotate(180deg);
+    }
+  
+    to {
+      transform: translateY(-10px) rotate(180deg);
+    }
+  }
+  
   
   .detail-botton-carrinho {
     background-color: rgb(1, 84, 157);
@@ -334,6 +345,7 @@
     cursor: auto;
     background-color: #c4cdd4;
   }
+  
 
   @media (max-width: 450px) {
     .container-btn-carrinho {

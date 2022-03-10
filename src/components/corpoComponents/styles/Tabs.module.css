@@ -8,7 +8,6 @@
   border-radius: 8px;
   box-shadow: #d3d9df 0px 6px 17px;
   align-items: center;
-  overflow-x: scroll;
   transition: 0.2s;
   flex-basis: content;
   white-space: nowrap;
@@ -38,4 +37,10 @@
 .Tabs > .buttonAtivo {
   color: #01549d;
   box-shadow: inset 0px -3px 0px -1px #01549d;
+}
+
+@media (max-width: 675px) {
+  .Tabs {
+    overflow-x: scroll;
+  }
 }

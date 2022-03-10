@@ -1,10 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import './styles/Carrinho.css';
 
 const Carrinho = ({itensCarrinho, itens, date, groups, idGrupoSelecionado, setIdGrupoSelecionado, buttonCompraText, setButtonCompraText, setItensCarrinho}) => {
   let [ yy, mm, dd ] = date.split('-'); 
   mm = new Date(date).toLocaleString('default', {month: 'long'});
+  const [ openClosedCarrinho, setOpenClosedCarrinho ] = React.useState('close');
 
   const next = (event) => {
     event.stopPropagation()
@@ -19,18 +19,52 @@ const Carrinho = ({itensCarrinho, itens, date, groups, idGrupoSelecionado, setId
       if(groups.length -1 > indexOf){
         setIdGrupoSelecionado(groups[indexOf+1].id)
       }
+
+      if(buttonCompraText === 'Finalizar Compra'){
+        window.location.href = '/login'
+      }
   }
 
   const excluirItemCarrinho = (event) => {
-    event.stopPropagation()
-    console.log("To funcionando ", event.target.getAttribute('value'))
+    event.stopPropagation();
+    console.log("CLicando")
+    console.log(event.target.getAttribute('value'))
     delete itensCarrinho[event.target.getAttribute('value')]
+    if((Object.keys(itensCarrinho).length === 0)){
+      setOpenClosedCarrinho('close');
+    }
     setItensCarrinho({...itensCarrinho})
   }
 
-  //TODO: implementar lista de itens no carrinho
   //TODO: mudar a setinha de direção quando clicar no para abrir o carrinho
   
+  const adicionarItensNoListCarrinho = () => {
+    const divProdutosCarrinho = document.querySelector('.lista-produtos-carrinho');
+    divProdutosCarrinho.innerHTML = ``;
+    
+    if(Object.keys(itensCarrinho).length === 0){
+      divProdutosCarrinho.innerHTML = `<span>Nenhum produto adicionado ao carrinho</span>`;
+    } else {
+     
+      Object.keys(itensCarrinho).forEach(key => {
+        const newProdutosListaCarrinho = document.createElement('div');
+        newProdutosListaCarrinho.classList.add('produto-lista-carrinho')
+        newProdutosListaCarrinho.setAttribute('id', itensCarrinho)
+
+        newProdutosListaCarrinho.innerHTML += ` 
+          <div class="produto-lista-carrinho" value="${key}"><div class="nome-produto-lista-produtos-carrinho" value="${key}">INGRESSO ANTECIPADO DAY USER + ALMOÇO BOSQUE</div>
+          <div class="container-qtde-e-valor-produto">
+          <div class="qtde-produto-lista-produtos-carrinho" value="${key}">1x</div>
+          <div class="valor-produto-lista-produtos-carrinho" value="${key}">R$&nbsp;99,90</div>
+          <svg class="icon-excluir-item-lista-produtos-carrinho" value="${key}" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+          </div></div>
+        `
+        divProdutosCarrinho.appendChild(newProdutosListaCarrinho);
+      });
+      
+      document.querySelectorAll('.icon-excluir-item-lista-produtos-carrinho').forEach(item => item.addEventListener('click', excluirItemCarrinho));
+    }
+  }
 
   React.useEffect(()=>{
     if(Object.keys(itensCarrinho).length === 0){
@@ -48,93 +82,56 @@ const Carrinho = ({itensCarrinho, itens, date, groups, idGrupoSelecionado, setId
 
     document.querySelectorAll('.valor-carrinho').forEach(valor => {
       const keys = Object.keys(itensCarrinho);
-      //(valorTarifarioAtual/100).toLocaleString("pt-BR", { minimumFractionDigits: 2, currency: 'BRL' })
 
       let addVirgula = keys.reduce( (soma, key) => { return soma + (itensCarrinho[key].quantidade * itensCarrinho[key].item.tarifarios[0].valor) }, 0)
-      addVirgula = (addVirgula/100).toLocaleString("pt-BR", { minimumFractionDigits: 2, currency: 'BRL' });
       
-      valor.innerText = addVirgula;
+      valor.innerText = (addVirgula/100).toLocaleString("pt-BR", { minimumFractionDigits: 2, currency: 'BRL' });
     });
-    /*const keys = Object.keys(itensCarrinho);
 
-    if( keys.length === 0){
-      
-      document.querySelector('.lista-produtos-carrinho').innerHTML = 'Nenhum produto adicionado ao carrinho'
-    } else{
-      if(document.querySelector('.lista-produtos-carrinho').innerText === 'Nenhum produto adicionado ao carrinho') document.querySelector('.lista-produtos-carrinho').innerHTML = '';
-
-      
-      const newProdutosListaCarrinho = document.createElement('div');
-      newProdutosListaCarrinho.classList.add('produto-lista-carrinho')
-      newProdutosListaCarrinho.setAttribute('id', itensCarrinho)
-
-      Object.keys(itensCarrinho).forEach(key => {
-        console.log("KEY " + itensCarrinho[key].item.iditens)
-        let item = false; 
-        document.querySelectorAll('.nome-produto-lista-produtos-carrinho').forEach(itemArray => {
-          item = (itemArray.getAttribute('value') == key)
-        })
-
-        console.log("ITEMMMM ", item)
-
-        if(item){
-          console.log("Já existe")
-        }
-
-        newProdutosListaCarrinho.innerHTML = `
-        <div class="nome-produto-lista-produtos-carrinho" value=${key}>new produto</div>
-          <div class="container-qtde-e-valor-produto">
-          <div class="qtde-produto-lista-produtos-carrinho" iditem="0">${itensCarrinho[key].quantidade}x</div>
-          <div class="valor-produto-lista-produtos-carrinho" iditem="0">20</div>
-          <svg class ="icon-excluir-item-lista-produtos-carrinho" value=${key} iditem="0" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
-        </div>
-        `
-      });
-
-      
-     
-
-    document.querySelector('.lista-produtos-carrinho').appendChild(newProdutosListaCarrinho)
-    
-  }
-
-  document.querySelectorAll('.icon-excluir-item-lista-produtos-carrinho').forEach(item => item.addEventListener('click', excluirItemCarrinho));
-  */
+    adicionarItensNoListCarrinho();
     
   }, [itensCarrinho]);
 
-  const openCarrinho = ({target}) => {
+  React.useEffect(() => {
+    const setasCarrinho = document.querySelectorAll('.seta-carrinho');
     const divCarrinho = document.querySelector('.container-carrinho');
     const divListaProdutosCarrinho = document.querySelector('.lista-produtos-carrinho');
     const divContainerBtnCarrinho = document.querySelector('.container-btn-carrinho');
+    
+    setasCarrinho.forEach(seta => seta.classList.toggle('para-cima'));
 
-    if(divCarrinho.classList.contains('fechado')){
-      document.querySelector('#tabs').style.marginTop = '200px';
-      divCarrinho.classList.remove('fechado');
-      divCarrinho.classList.add('aberto'); 
-      divListaProdutosCarrinho.classList.add('aberto');
-      if(Object.keys(itensCarrinho).length != 0) {
-        divContainerBtnCarrinho.classList.add('aberto-com-produtos')
-        divContainerBtnCarrinho.classList.remove('fechado')
-      } else{
-        divContainerBtnCarrinho.style.display = 'none'
-      }
-    } else {
-      document.querySelector('#tabs').style.marginTop = '10px';
-      if(divContainerBtnCarrinho.classList.contains('aberto-com-produtos')){
-        divContainerBtnCarrinho.classList.remove('aberto-com-produtos');
-        divContainerBtnCarrinho.classList.add('fechado')
-      } else{
-        divContainerBtnCarrinho.style.display = 'flex'
-      }
-      divListaProdutosCarrinho.classList.remove('aberto');
-      divCarrinho.classList.remove('aberto');
-      divCarrinho.classList.add('fechado');
+    switch(openClosedCarrinho){
+      case 'open':
+        if(divCarrinho.classList.contains('fechado')){
+          document.querySelector('#tabs').style.marginTop = '200px';
+          divCarrinho.classList.remove('fechado');
+          divCarrinho.classList.add('aberto'); 
+          divListaProdutosCarrinho.classList.add('aberto');
+          if(Object.keys(itensCarrinho).length !== 0) {
+            divContainerBtnCarrinho.classList.add('aberto-com-produtos')
+            divContainerBtnCarrinho.classList.remove('fechado')
+          } else{
+            divContainerBtnCarrinho.style.display = 'none'
+          }
+        }
+        break;
+        case 'close':
+          document.querySelector('#tabs').style.marginTop = '10px';
+          if(divContainerBtnCarrinho.classList.contains('aberto-com-produtos')){
+            divContainerBtnCarrinho.classList.remove('aberto-com-produtos');
+            divContainerBtnCarrinho.classList.add('fechado')
+          } else{
+            divContainerBtnCarrinho.style.display = 'flex'
+          }
+          divListaProdutosCarrinho.classList.remove('aberto');
+          divCarrinho.classList.remove('aberto');
+          divCarrinho.classList.add('fechado'); 
+          break;
     }
-  }
+  }, [openClosedCarrinho]);
 
   return (
-    <div className="container-carrinho fechado" onClick={openCarrinho}>
+    <div className="container-carrinho fechado" onClick={() => setOpenClosedCarrinho( (openClosedCarrinho == 'close') ? 'open' : 'close' )}>
       <div className="container-details-carrinho">
         <div className="details-carrinho">
           <div className="container-data-carrinho">
@@ -162,7 +159,7 @@ const Carrinho = ({itensCarrinho, itens, date, groups, idGrupoSelecionado, setId
             </div>
           </div>
           <div className="container-detail-botton-carrinho">
-            <svg className="seta-carrinho para-baixo" stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 24 24" style={{color: 'rgb(90, 108, 124)', width: '25px', height: '25px'}} height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"></path></svg>
+            <svg className="seta-carrinho para-baixo para-cima" stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 24 24" style={{color: 'rgb(90, 108, 124)', width: '25px', height: '25px'}} height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"></path></svg>
             <div className="detail-botton-carrinho"></div>
           </div> 
           </div>    
