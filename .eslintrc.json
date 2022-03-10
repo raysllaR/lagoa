@@ -10,7 +10,7 @@
     ],
     "parserOptions": {
         "ecmaFeatures": {
-            "jsx": false
+            "jsx": true
         },
         "ecmaVersion": "latest"
     },
@@ -18,9 +18,6 @@
         "react"
     ],
     "rules": {
-        "no-confusing-arrow": [
-            "error",
-            { "allowParens": true, "onlyOneSimpleParam": false }
-        ]
+       
     }
 }
