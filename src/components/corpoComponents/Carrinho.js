@@ -46,7 +46,16 @@ const Carrinho = ({itensCarrinho, itens, date, groups, idGrupoSelecionado, setId
       contador.innerText = keys.reduce( (soma, key) => { return soma + itensCarrinho[key].quantidade }, 0);
     });
 
-    const keys = Object.keys(itensCarrinho);
+    document.querySelectorAll('.valor-carrinho').forEach(valor => {
+      const keys = Object.keys(itensCarrinho);
+      //(valorTarifarioAtual/100).toLocaleString("pt-BR", { minimumFractionDigits: 2, currency: 'BRL' })
+
+      let addVirgula = keys.reduce( (soma, key) => { return soma + (itensCarrinho[key].quantidade * itensCarrinho[key].item.tarifarios[0].valor) }, 0)
+      addVirgula = (addVirgula/100).toLocaleString("pt-BR", { minimumFractionDigits: 2, currency: 'BRL' });
+      
+      valor.innerText = addVirgula;
+    });
+    /*const keys = Object.keys(itensCarrinho);
 
     if( keys.length === 0){
       
@@ -86,10 +95,11 @@ const Carrinho = ({itensCarrinho, itens, date, groups, idGrupoSelecionado, setId
      
 
     document.querySelector('.lista-produtos-carrinho').appendChild(newProdutosListaCarrinho)
+    
   }
 
   document.querySelectorAll('.icon-excluir-item-lista-produtos-carrinho').forEach(item => item.addEventListener('click', excluirItemCarrinho));
-
+  */
     
   }, [itensCarrinho]);
 
