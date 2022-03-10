@@ -12,7 +12,7 @@ const Login = () => {
             logo: `https://sofaltaeuimagens.s3-sa-east-1.amazonaws.com/sofaltaeu.svg`,
             content: document.getElementById('entrySofaltaEu'), 
             empreendimento: 'lagoa',
-            callback: (token)=>{if(token) return window.location.href = 'http://localhost:3000/'; else return initLogin()},
+            callback: (token)=>{ return (token) ? window.location.href = 'http://localhost:3000/' : initLogin()},
             dominioSFE: 'https://sofalta.eu',
             callbackUsuarioExiste: (usuario)=>{},
             imagemSucesso: `https://sofaltaeuimagens.s3-sa-east-1.amazonaws.com/sofaltaeu.svg`,

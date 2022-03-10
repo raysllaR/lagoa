@@ -99,7 +99,7 @@
     margin-left: 5px;
   }
   
-.Header .divButtons button {
+.Header .divButtons .button {
   height: 35px;
   margin-left: 5px;
   margin-right: 5px;
@@ -115,7 +115,11 @@
   transition: 0.2s;
   text-indent: 8px;
 }
-  
+
+.Header .divButtons .button .icon {
+  padding-right: 6px;
+}
+
 .Header .divButtons button:hover {
   border: 1px solid #6b8194;
   transition: 0.2s;
