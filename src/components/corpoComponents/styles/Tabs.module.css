@@ -15,6 +15,8 @@
 
 .Tabs > button {
   min-height: 48px;
+  max-width: 246px;
+  min-width: 176px;
   background-color: #fff;
   color: #8a97a2;
   font-weight: 500;
