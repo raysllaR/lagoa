@@ -1,48 +1,69 @@
-const { createSlice } = require("@reduxjs/toolkit");
+/* eslint-disable no-undef */
+/* eslint-disable no-console */
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-param-reassign */
+const { createSlice } = require('@reduxjs/toolkit');
 
 const slice = createSlice({
-    name: 'fetchGetApiIngressos',
-    initialState: {
-        loading: false,
-        data: null,
-        error: null
+  name: 'fetchGetApiIngressos',
+  initialState: {
+    loading: false,
+    date: {
+      year: '',
+      month: '',
+      day: '',
     },
-    reducers: {
-        fetchStarted: (state) => {
-            state.loading = true;
-        },
-        fetchSucess(state, action) {
-            state.loading = false;
-            state.data = action.payload;
-            state.error = null;
-        },
-        fetchError(state, action){
-            state.loading = false;
-            state.data = null;
-            state.error = action.payload;
-        }
-    }
+    error: null,
+  },
+  reducers: {
+    fetchStarted: (state) => {
+      state.loading = true;
+    },
+    fetchSucess(state, action) {
+      state.loading = false;
+      state.data = action.payload;
+      state.error = null;
+    },
+    fetchError(state, action) {
+      state.loading = false;
+      state.data = null;
+      state.error = action.payload;
+    },
+    chageDate(state, action) {
+      state.date = action.payload;
+    },
+  },
 
 });
 
-const { fetchStarted, fetchSucess, fetchError } = slice.actions;
+const {
+  fetchStarted, fetchSucess, fetchError, chageDate,
+} = slice.actions;
 
-export const fetchGetDayIgressos = (day) => async (dispatch) => {
-    try {
-        dispatch(fetchStarted());
+export const fetchGetDayIgressos = () => async (dispatch) => {
+  try {
+    dispatch(fetchStarted());
 
-        const response = await fetch(`https://sofalta.eu/api/v4/empreendimentos/lagoa/produtos/ingressos/ingressos?data=${day}`);
+    const dateSelected = window.atob(window.location.href.split('http://localhost:3000/lagoa/#/ingressos/')[1]);
 
-        const data = await response.json();
+    const [day, month, year] = dateSelected.split('-');
 
-        if(data.code == 404) throw data;
+    const date = { day, month, year };
 
-        if(data.itens.length === 0) throw {code: 404, message: "Não há ingressos para o dia selecionado!"};
+    dispatch(chageDate(date));
 
-        return dispatch(fetchSucess(data));
-    } catch (error) {
-        return dispatch(fetchError(error));
-    }
-}
+    const response = await fetch(`https://sofalta.eu/api/v4/empreendimentos/lagoa/produtos/ingressos/ingressos?data=${year}-${month}-${day}`);
+
+    const data = await response.json();
+
+    if (data.code === 404) throw new Error(data);
+
+    if (data.itens.length === 0) throw new Error({ code: 404, message: 'Não há ingressos para o dia selecionado!' });
+
+    return dispatch(fetchSucess(data));
+  } catch (error) {
+    return dispatch(fetchError(error));
+  }
+};
 
 export default slice.reducer;

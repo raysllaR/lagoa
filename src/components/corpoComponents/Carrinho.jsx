@@ -1,3 +1,6 @@
+/* eslint-disable no-shadow */
+/* eslint-disable no-unused-vars */
+/* eslint-disable array-callback-return */
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/jsx-filename-extension */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
@@ -13,20 +16,19 @@ import { openOrCloseCarrinho } from '../../store/carrinhoData';
 import './styles/Carrinho.css';
 
 function Carrinho({
-  itensCarrinho, itens, date, groups, idGrupoSelecionado, setIdGrupoSelecionado, buttonCompraText, setButtonCompraText, setItensCarrinho,
+  itensCarrinho, groups, idGrupoSelecionado, setIdGrupoSelecionado, buttonCompraText, setItensCarrinho,
 }) {
-  let [yy, mm, dd] = date.split('-');
-  mm = new Date(date).toLocaleString('default', { month: 'long' });
-  // eslint-disable-next-line no-shadow
-  const state = useSelector((state) => state);
   const dispatch = useDispatch();
+  const state = useSelector((state) => state);
+  let { day, month, year } = state.fetchGetApiIngressos.date;
+  month = new Date(`${year}-${month}-${day}`).toLocaleString('default', { month: 'long' });
+
   const isOpen = state.carrinho.open;
 
   const next = (event) => {
     event.stopPropagation();
     let indexOf;
     groups.findIndex((grupo, index) => {
-      console.log(index);
       if (grupo.id === idGrupoSelecionado) {
         indexOf = index;
       }
@@ -143,13 +145,14 @@ function Carrinho({
       <div className="container-details-carrinho">
         <div className="details-carrinho">
           <div className="container-data-carrinho">
-            <div className="dia-data-carrinho full">{dd}</div>
+            <div className="dia-data-carrinho full">{day}</div>
             <div className="separador-data-carrinho full" />
             <div className="conainer-mes-ano-carrinho">
-              <div className="mes-data-carrinho full">{mm}</div>
+              <div className="mes-data-carrinho full">{month}</div>
               <div className="ano-mes-carrinhos">
                 de
-                {yy}
+                {' '}
+                {year}
               </div>
             </div>
           </div>

@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 
 const slice = createSlice({
@@ -12,6 +13,7 @@ const slice = createSlice({
       day: '',
     },
     listItens: {},
+    listDates: [],
   },
   reducers: {
     openOrCloseCarrinho: (state) => {

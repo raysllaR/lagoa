@@ -1,3 +1,8 @@
+/* eslint-disable prefer-const */
+/* eslint-disable no-shadow */
+/* eslint-disable no-unused-expressions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { openOrCloseCarrinho } from '../store/carrinhoData';
@@ -5,19 +10,29 @@ import './corpoComponents/styles/Carrinho.css';
 
 function CarrinhoTop() {
   const dispatch = useDispatch();
-  const isOpen = useSelector((state) => state.carrinho.open);
+  const state = useSelector((state) => state);
+  const isOpen = state.carrinho.open;
+  let { day, month, year } = state.fetchGetApiIngressos.date;
+  month = new Date(`${year}-${month}-${day}`).toLocaleString('default', { month: 'long' });
 
   return (
-    <div className="details-carrinho-full" onClick={() => {
-      !isOpen && dispatch(openOrCloseCarrinho());
-      window.scrollTo(0, 345);
-    }} >
+    <div
+      className="details-carrinho-full"
+      onClick={() => {
+        !isOpen && dispatch(openOrCloseCarrinho());
+        window.scrollTo(0, 345);
+      }}
+    >
       <div className="container-data-carrinho">
-        <div className="dia-data-carrinho full">25</div>
+        <div className="dia-data-carrinho full">{day}</div>
         <div className="separador-data-carrinho full" />
         <div className="conainer-mes-ano-carrinho">
-          <div className="mes-data-carrinho full">fevereiro</div>
-          <div className="ano-mes-carrinhos">de 2022</div>
+          <div className="mes-data-carrinho full">{month}</div>
+          <div className="ano-mes-carrinhos">
+            de
+            {' '}
+            {year}
+          </div>
         </div>
       </div>
       <div className="container-itens-carrinho">
