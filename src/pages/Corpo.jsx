@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 /* eslint-disable import/named */
 /* eslint-disable no-console */
@@ -14,6 +15,7 @@ import Carrinho from '../components/corpoComponents/Carrinho';
 import Loading from '../components/corpoComponents/Loading';
 import MessageError from '../components/corpoComponents/MessageError';
 import Tabs from '../components/corpoComponents/Tabs';
+import { setListItens } from '../store/carrinhoData';
 import { fetchGetDayIgressos } from '../store/dadosApi';
 import style from './styles/Corpo.module.css';
 
@@ -42,11 +44,14 @@ function Corpo() {
     callDispatch(dataSelecionada);
 
     try {
-      if (localStorage.getItem('itensLista')) {
+      if (localStorage.getItem('itensLista') && localStorage.getItem('itensListaRedux')) {
         setItensCarrinho(JSON.parse(localStorage.getItem('itensLista')));
+        dispatch(setListItens(JSON.parse(localStorage.getItem('itensListaRedux'))));
       }
     } catch (e) {
       localStorage.setItem('itensLista', []);
+      localStorage.setItem('itensLista', []);
+      dispatch(setListItens([]));
       setItensCard({});
     }
   }, []);

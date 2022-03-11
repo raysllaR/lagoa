@@ -181,7 +181,7 @@ function Carrinho({
         <div className={`lista-produtos-carrinho ${isOpen ? 'aberto' : 'fechado'}`}><span className="nenhum-produto">Nenhum produto adicionado ao carrinho</span></div>
       </div>
       <div className={`container-btn-carrinho ${isOpen ? 'aberto-com-produtos' : 'fechado'}`}>
-        <button className="btn-carrinho btn-carrinho-buy-other-day" onClick={(event) => { event.stopPropagation(); window.location.href = '/'; }} style={{}}>
+        <button className="btn-carrinho btn-carrinho-buy-other-day" onClick={(event) => { event.stopPropagation(); window.location.href = '/'; }}>
           <span className="outro-dia">Comprar para outro dia</span>
           <svg stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" style={{ width: '17px', height: '17px', marginRight: '5px' }} height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
             <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />

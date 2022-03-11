@@ -10,14 +10,17 @@
 /* eslint-disable max-len */
 /* eslint-disable react/prop-types */
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setListItens } from '../../store/carrinhoData';
 import './styles/Cards.css';
 
 function Cards({
   itens, qtdParcelamentos, setItensCarrinho, itensCarrinho,
 }) {
+  const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const { day, month, year } = state.fetchGetApiIngressos.date;
+  const { listItens } = state.carrinho;
   const date = `${year}-${month}-${day}`;
   let condicao = false;
   let isEqualsValorOriginal = false;
@@ -38,6 +41,18 @@ function Cards({
 
     if (!itensCarrinho[id + date]) {
       setItensCarrinho({ ...itensCarrinho, [id + date]: { dateCompra: date, quantidade: 1, item: { ...item } } });
+
+      const newItem = { ...item, quantidade: 1 };
+      console.log('SIM É UM NOVO ITEM IGUAL AO VELHO + 1 ', newItem);
+      console.log('DATE ', date);
+      console.log('DATE LIST ', listItens[date]);
+
+      if (listItens[date]) {
+        dispatch(setListItens({ ...listItens, [date]: { itens: [...listItens[date].itens, newItem] } }));
+      } else {
+        console.log('OPA TO AQUI');
+        dispatch(setListItens({ ...listItens, [date]: { itens: [newItem] } }));
+      }
     } else {
       switch (acao) {
         case 'add':
@@ -63,12 +78,18 @@ function Cards({
     localStorage.setItem('itensLista', JSON.stringify(listItens));
   };
 
+  const saveToLocaleStringRedux = (listItens) => {
+    localStorage.setItem('itensListaRedux', JSON.stringify(listItens));
+  };
+
   return (
     <section className="cards">
       <div className="container-cards container-cards-ativo">
+        {console.log('LIST ITWNS ', listItens)}
         {itens.map((item) => (
           <div key={item.iditens} className="card">
             {saveToLocaleString(itensCarrinho)}
+            {saveToLocaleStringRedux(listItens)}
             { isEqualsValorOriginal = (item.tarifarios[0].valor === item.valorOriginal) }
             <img alt="" className="img-card" src={`${item.imagem}`} />
             { itemMaisVendido(item.grupos, item.idGroupMaisVendidos) && <img className="img-imagem-mais-vendido" src="https://sofalta.eu/meuingresso/public/assets/images/arts/mais-vendido.png" />}

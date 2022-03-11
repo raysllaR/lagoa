@@ -5,27 +5,25 @@ import Footer from './components/Footer';
 import Corpo from './pages/Corpo';
 import PosFooter from './components/PosFooter';
 import Calendario from './pages/Calendario';
-import "./App.css";
-import Login from './pages/Login';
+import './App.css';
 import CarrinhoTop from './components/CarrinhoTop';
 
-const App = () => {
+function App() {
   return (
-    <React.Fragment>
+    <>
       <BrowserRouter>
         <Header />
         <CarrinhoTop />
         <Routes>
           <Route path="/" element={<Calendario />} />
           <Route path="/:url" element={<Corpo />} />
-          <Route path="/login" element={<Login />} />
         </Routes>
 
         <Footer />
       </BrowserRouter>
       <PosFooter />
-    </React.Fragment>
-  )
+    </>
+  );
 }
 
-export default App
+export default App;

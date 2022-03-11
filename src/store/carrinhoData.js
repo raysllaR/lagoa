@@ -12,15 +12,20 @@ const slice = createSlice({
       month: '',
       day: '',
     },
-    listItens: {},
+    listItens: [],
     listDates: [],
   },
   reducers: {
     openOrCloseCarrinho: (state) => {
       state.open = !state.open;
     },
+    setListItens: (state, actions) => {
+      console.log('O QUE CARALHOS TEM NO PAYLOAD ', actions.payload);
+      state.listItens = actions.payload;
+      console.log('OLHA OS ITENS DO CARRINHO AQUI NA SUA PORTA', state.listItens);
+    },
   },
 });
 
-export const { openOrCloseCarrinho } = slice.actions;
+export const { openOrCloseCarrinho, setListItens } = slice.actions;
 export default slice.reducer;
