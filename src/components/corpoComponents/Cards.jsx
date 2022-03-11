@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 /* eslint-disable no-shadow */
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
@@ -11,11 +12,11 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setListItens } from '../../store/carrinhoData';
+import { setListItens, setQtdCarrinho } from '../../store/carrinhoData';
 import './styles/Cards.css';
 
 function Cards({
-  itens, qtdParcelamentos, setItensCarrinho, itensCarrinho,
+  itens, qtdParcelamentos,
 }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
@@ -35,47 +36,21 @@ function Cards({
     return value.toLocaleString('pt-BR', { minimumFractionDigits: 2, currency: 'BRL' });
   };
 
-  const changeValueItemCardAndAddToCarrinho = (event, item, acao) => {
+  const changeValueItemCardAndAddToCarrinho = (event, item, operacao) => {
     event.stopPropagation();
     const id = item.iditens;
 
-    if (!itensCarrinho[id + date]) {
-      setItensCarrinho({ ...itensCarrinho, [id + date]: { dateCompra: date, quantidade: 1, item: { ...item } } });
-
+    if (listItens[date] && listItens[date][id]) {
+      dispatch(setQtdCarrinho({ date, id: item.iditens, operacao }));
+    } else {
       const newItem = { ...item, quantidade: 1 };
-      console.log('SIM É UM NOVO ITEM IGUAL AO VELHO + 1 ', newItem);
-      console.log('DATE ', date);
-      console.log('DATE LIST ', listItens[date]);
 
       if (listItens[date]) {
-        dispatch(setListItens({ ...listItens, [date]: { itens: [...listItens[date].itens, newItem] } }));
+        dispatch(setListItens({ ...listItens, [date]: { ...listItens[date], [item.iditens]: newItem } }));
       } else {
-        console.log('OPA TO AQUI');
-        dispatch(setListItens({ ...listItens, [date]: { itens: [newItem] } }));
+        dispatch(setListItens({ ...listItens, [date]: { [item.iditens]: newItem } }));
       }
-    } else {
-      switch (acao) {
-        case 'add':
-          itensCarrinho[id + date].quantidade++;
-          break;
-        case 'sub':
-          if (itensCarrinho[id + date].quantidade > 0) {
-            itensCarrinho[id + date].quantidade--;
-          }
-          if (itensCarrinho[id + date].quantidade === 0) {
-            delete itensCarrinho[id + date];
-            setItensCarrinho({ ...itensCarrinho });
-            return;
-          }
-          break;
-      }
-
-      setItensCarrinho({ ...itensCarrinho, [id + date]: { ...itensCarrinho[id + date] } });
     }
-  };
-
-  const saveToLocaleString = (listItens) => {
-    localStorage.setItem('itensLista', JSON.stringify(listItens));
   };
 
   const saveToLocaleStringRedux = (listItens) => {
@@ -85,10 +60,8 @@ function Cards({
   return (
     <section className="cards">
       <div className="container-cards container-cards-ativo">
-        {console.log('LIST ITWNS ', listItens)}
         {itens.map((item) => (
           <div key={item.iditens} className="card">
-            {saveToLocaleString(itensCarrinho)}
             {saveToLocaleStringRedux(listItens)}
             { isEqualsValorOriginal = (item.tarifarios[0].valor === item.valorOriginal) }
             <img alt="" className="img-card" src={`${item.imagem}`} />
@@ -134,13 +107,14 @@ function Cards({
                   <span className="regra-condicao">Regras e condições</span>
                 </div>
               </div>
-              {condicao = !itensCarrinho[item.iditens + date]}
+              {condicao = !(listItens[date] && listItens[date][item.iditens])}
+              {console.log('CONDICAO O CARAI ', condicao)}
               <div className={`container-btn-card ${condicao && 'isComprar'}`}>
                 <div className={`btn-comprar-card ${condicao && 'isComprar'}`} onClick={(event) => changeValueItemCardAndAddToCarrinho(event, item, 'add')}>
                   <div className={`btn btn-subtrair ${condicao && 'isComprarBtn'}`} onClick={(event) => changeValueItemCardAndAddToCarrinho(event, item, 'sub')}>-</div>
                   <span className="label-quantidade-produto">
                     {' '}
-                    { condicao ? 'Comprar' : itensCarrinho[item.iditens + date].quantidade}
+                    { condicao ? 'Comprar' : listItens[date][item.iditens].quantidade}
                   </span>
                   <div className={`btn btn-adicionar ${condicao && 'isComprarBtn'}`} onClick={(event) => changeValueItemCardAndAddToCarrinho(event, item, 'add')}>+</div>
                 </div>

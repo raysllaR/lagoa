@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-expressions */
+/* eslint-disable no-const-assign */
 /* eslint-disable no-shadow */
 /* eslint-disable no-unused-vars */
 /* eslint-disable array-callback-return */
@@ -12,18 +14,25 @@
 /* eslint-disable max-len */
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { openOrCloseCarrinho } from '../../store/carrinhoData';
+import {
+  openOrCloseCarrinho,
+  setQtdCarrinho,
+  setQuantodadeItensCarrinho,
+  setValorCarrinho,
+} from '../../store/carrinhoData';
 import './styles/Carrinho.css';
 
 function Carrinho({
-  itensCarrinho, groups, idGrupoSelecionado, setIdGrupoSelecionado, buttonCompraText, setItensCarrinho,
+  groups, idGrupoSelecionado, setIdGrupoSelecionado, buttonCompraText,
 }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   let { day, month, year } = state.fetchGetApiIngressos.date;
-  month = new Date(`${year}-${month}-${day}`).toLocaleString('default', { month: 'long' });
+  const date = `${year}-${month}-${day}`;
+  month = new Date(date).toLocaleString('default', { month: 'long' });
 
   const isOpen = state.carrinho.open;
+  const { listItens, value, quantidade } = state.carrinho;
 
   const next = (event) => {
     event.stopPropagation();
@@ -45,37 +54,49 @@ function Carrinho({
 
   const excluirItemCarrinho = (event) => {
     event.stopPropagation();
-
-    delete itensCarrinho[event.target.getAttribute('value')];
-    if ((Object.keys(itensCarrinho).length === 0)) {
-      dispatch(openOrCloseCarrinho());
-    }
-    setItensCarrinho({ ...itensCarrinho });
+    const id = event.target.getAttribute('id');
+    const date = event.target.getAttribute('date');
+    dispatch(setQtdCarrinho({ date, id, operacao: 'delete' }));
+    console.log('GKAY??? ', Object.keys(listItens).length);
   };
 
   // TODO: mudar a setinha de direção quando clicar no para abrir o carrinho
+
+  const addVirgula = (valueCents) => (
+    (valueCents / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2, currency: 'BRL' })
+  );
 
   const adicionarItensNoListCarrinho = () => {
     const divProdutosCarrinho = document.querySelector('.lista-produtos-carrinho');
     divProdutosCarrinho.innerHTML = '';
 
-    if (Object.keys(itensCarrinho).length === 0) {
+    if (Object.keys(listItens).length === 0) {
       divProdutosCarrinho.innerHTML = '<span>Nenhum produto adicionado ao carrinho</span>';
     } else {
-      Object.keys(itensCarrinho).forEach((key) => {
-        const newProdutosListaCarrinho = document.createElement('div');
-        newProdutosListaCarrinho.classList.add('produto-lista-carrinho');
-        newProdutosListaCarrinho.setAttribute('id', itensCarrinho);
+      Object.keys(listItens).forEach((key) => {
+        [year, month, day] = key.split('-');
+        month = new Date(date).toLocaleString('default', { month: 'long' });
 
-        newProdutosListaCarrinho.innerHTML += ` 
-          <div class="produto-lista-carrinho" value="${key}"><div class="nome-produto-lista-produtos-carrinho" value="${key}">INGRESSO ANTECIPADO DAY USER + ALMOÇO BOSQUE</div>
-          <div class="container-qtde-e-valor-produto">
-          <div class="qtde-produto-lista-produtos-carrinho" value="${key}">1x</div>
-          <div class="valor-produto-lista-produtos-carrinho" value="${key}">R$&nbsp;99,90</div>
-          <svg class="icon-excluir-item-lista-produtos-carrinho" value="${key}" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
-          </div></div>
+        divProdutosCarrinho.innerHTML += `
+          <div style="text-align: center; padding: 5px; padding-top: 20px; box-sizing: border-box; color: rgb(90, 108, 124); font-size: 1.1em; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; transition: all 0.2s ease 0s;">
+            ${day} de ${month} de ${year}<span class="" style="color: rgb(45, 157, 1); background-color: rgb(241, 255, 235); font-size: 0.87rem; padding: 4px 13px; border-radius: 6px; margin: 0px 5px; cursor: pointer;">${key === date ? 'Dia selecionado' : 'Alterar'}</span>
+          </div>
         `;
-        divProdutosCarrinho.appendChild(newProdutosListaCarrinho);
+        Object.keys(listItens[key]).forEach((keyItem) => {
+          const newProdutosListaCarrinho = document.createElement('div');
+          newProdutosListaCarrinho.classList.add('produto-lista-carrinho');
+          const objectItem = listItens[key][keyItem];
+          newProdutosListaCarrinho.setAttribute('id', keyItem);
+          newProdutosListaCarrinho.innerHTML += ` 
+              <div class="produto-lista-carrinho" value="${keyItem}"><div class="nome-produto-lista-produtos-carrinho" value="${keyItem}">${objectItem.nome}</div>
+              <div class="container-qtde-e-valor-produto">
+              <div class="qtde-produto-lista-produtos-carrinho" value="${keyItem}">${objectItem.quantidade}x</div>
+              <div class="valor-produto-lista-produtos-carrinho" value="${keyItem}">R$ ${addVirgula(objectItem.tarifarios[0].valor)}</div>
+              <svg class="icon-excluir-item-lista-produtos-carrinho" date=${key} value="${key}" id="${keyItem}" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+              </div></div>
+            `;
+          divProdutosCarrinho.appendChild(newProdutosListaCarrinho);
+        });
       });
 
       document.querySelectorAll('.icon-excluir-item-lista-produtos-carrinho').forEach((item) => item.addEventListener('click', excluirItemCarrinho));
@@ -83,28 +104,18 @@ function Carrinho({
   };
 
   React.useEffect(() => {
-    if (Object.keys(itensCarrinho).length === 0) {
+    if (Object.keys(listItens).length === 0) {
       document.querySelectorAll('.btn-carrinho-next').forEach((item) => item.setAttribute('disabled', 'disabled'));
     } else {
       document.querySelectorAll('.btn-carrinho-next').forEach((item) => item.removeAttribute('disabled'));
     }
 
-    document.querySelectorAll('.contador-carrinho').forEach((contador) => {
-      const keys = Object.keys(itensCarrinho);
-
-      contador.innerText = keys.reduce((soma, key) => soma + itensCarrinho[key].quantidade, 0);
-    });
-
-    document.querySelectorAll('.valor-carrinho').forEach((valor) => {
-      const keys = Object.keys(itensCarrinho);
-
-      const addVirgula = keys.reduce((soma, key) => soma + (itensCarrinho[key].quantidade * itensCarrinho[key].item.tarifarios[0].valor), 0);
-
-      valor.innerText = (addVirgula / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2, currency: 'BRL' });
-    });
+    dispatch(setValorCarrinho());
+    dispatch(setQuantodadeItensCarrinho());
 
     adicionarItensNoListCarrinho();
-  }, [itensCarrinho]);
+    (Object.keys(listItens).length === 0 && isOpen) && dispatch(openOrCloseCarrinho());
+  }, [listItens]);
 
   React.useEffect(() => {
     const setasCarrinho = document.querySelectorAll('.seta-carrinho');
@@ -116,7 +127,7 @@ function Carrinho({
     if (isOpen) {
       if (divCarrinho.classList.contains('fechado')) {
         document.querySelector('#tabs').style.marginTop = '200px';
-        if (Object.keys(itensCarrinho).length === 0) {
+        if (Object.keys(listItens).length === 0) {
           divContainerBtnCarrinho.style.display = 'none';
         }
       }
@@ -165,11 +176,11 @@ function Carrinho({
                   <circle cx="20" cy="21" r="1" />
                   <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
                 </svg>
-                <div className="contador-carrinho">0</div>
+                <div className="contador-carrinho">{quantidade}</div>
               </div>
               <div className="label-total-carrinho">
                 <span>R$</span>
-                <div className="valor-carrinho">0,00</div>
+                <div className="valor-carrinho">{value}</div>
               </div>
             </div>
             <div className="container-detail-botton-carrinho">
@@ -189,7 +200,6 @@ function Carrinho({
             <line x1="8" y1="2" x2="8" y2="6" />
             <line x1="3" y1="10" x2="21" y2="10" />
           </svg>
-
         </button>
         <button className="btn-carrinho btn-carrinho-next" onClick={next}>
           {buttonCompraText}

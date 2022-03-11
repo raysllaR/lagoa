@@ -44,8 +44,7 @@ function Corpo() {
     callDispatch(dataSelecionada);
 
     try {
-      if (localStorage.getItem('itensLista') && localStorage.getItem('itensListaRedux')) {
-        setItensCarrinho(JSON.parse(localStorage.getItem('itensLista')));
+      if (localStorage.getItem('itensListaRedux')) {
         dispatch(setListItens(JSON.parse(localStorage.getItem('itensListaRedux'))));
       }
     } catch (e) {

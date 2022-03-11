@@ -15,6 +15,8 @@ function CarrinhoTop() {
   let { day, month, year } = state.fetchGetApiIngressos.date;
   month = new Date(`${year}-${month}-${day}`).toLocaleString('default', { month: 'long' });
 
+  const { value, quantidade } = state.carrinho;
+
   return (
     <div
       className="details-carrinho-full"
@@ -55,11 +57,11 @@ function CarrinhoTop() {
               <circle cx="20" cy="21" r="1" />
               <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
             </svg>
-            <div className="contador-carrinho">0</div>
+            <div className="contador-carrinho">{quantidade}</div>
           </div>
           <div className="label-total-carrinho">
             <span>R$</span>
-            <div className="valor-carrinho">0,00</div>
+            <div className="valor-carrinho">{value}</div>
           </div>
         </div>
         <div className="container-detail-botton-carrinho">
