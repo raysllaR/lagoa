@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
@@ -9,11 +10,15 @@
 /* eslint-disable max-len */
 /* eslint-disable react/prop-types */
 import React from 'react';
+import { useSelector } from 'react-redux';
 import './styles/Cards.css';
 
 function Cards({
-  itens, qtdParcelamentos, setItensCarrinho, itensCarrinho, date,
+  itens, qtdParcelamentos, setItensCarrinho, itensCarrinho,
 }) {
+  const state = useSelector((state) => state);
+  const { day, month, year } = state.fetchGetApiIngressos.date;
+  const date = `${year}-${month}-${day}`;
   let condicao = false;
   let isEqualsValorOriginal = false;
 

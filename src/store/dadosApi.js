@@ -1,6 +1,9 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
+
+import { setIdGrupoSelecionado } from './tab';
+
 /* eslint-disable no-param-reassign */
 const { createSlice } = require('@reduxjs/toolkit');
 
@@ -43,14 +46,9 @@ const {
 export const fetchGetDayIgressos = () => async (dispatch) => {
   try {
     dispatch(fetchStarted());
-
     const dateSelected = window.atob(window.location.href.split('http://localhost:3000/lagoa/#/ingressos/')[1]);
 
     const [day, month, year] = dateSelected.split('-');
-
-    const date = { day, month, year };
-
-    dispatch(chageDate(date));
 
     const response = await fetch(`https://sofalta.eu/api/v4/empreendimentos/lagoa/produtos/ingressos/ingressos?data=${year}-${month}-${day}`);
 
@@ -59,6 +57,9 @@ export const fetchGetDayIgressos = () => async (dispatch) => {
     if (data.code === 404) throw new Error(data);
 
     if (data.itens.length === 0) throw new Error({ code: 404, message: 'Não há ingressos para o dia selecionado!' });
+
+    dispatch(chageDate({ day, month, year }));
+    dispatch(setIdGrupoSelecionado(data.grupos[0].id));
 
     return dispatch(fetchSucess(data));
   } catch (error) {

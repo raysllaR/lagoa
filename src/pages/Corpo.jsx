@@ -92,11 +92,8 @@ function Corpo() {
         setItensCarrinho={setItensCarrinho}
       />
       <Tabs
-        groups={dadosApi.grupos}
         setDadosCard={setItensCard}
         listItens={dadosApi.itens}
-        idGrupoSelecionado={idGrupoSelecionado}
-        setIdGrupoSelecionado={setIdGrupoSelecionado}
       />
       {itensCards && (
         <Cards
