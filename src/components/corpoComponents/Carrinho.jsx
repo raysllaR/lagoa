@@ -14,40 +14,42 @@
 /* eslint-disable max-len */
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { setTextButtonOutroDia, setTextProximoFinalizar } from '../../store/buttonsText';
 import {
   openOrCloseCarrinho,
   setQtdCarrinho,
   setQuantodadeItensCarrinho,
   setValorCarrinho,
 } from '../../store/carrinhoData';
+import { setIdGrupoSelecionado } from '../../store/tabCards';
 import './styles/Carrinho.css';
 
-function Carrinho({
-  groups, idGrupoSelecionado, setIdGrupoSelecionado, buttonCompraText,
-}) {
+function Carrinho() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   let { day, month, year } = state.fetchGetApiIngressos.date;
   const date = `${year}-${month}-${day}`;
   month = new Date(date).toLocaleString('default', { month: 'long' });
-
+  const { grupos } = state.fetchGetApiIngressos.data;
+  const { idGrupoSelecionado } = state.tabCards;
   const isOpen = state.carrinho.open;
   const { listItens, value, quantidade } = state.carrinho;
+  const { buttonOutroDia, buttonProximoFinalizar } = state.buttonsText;
 
   const next = (event) => {
     event.stopPropagation();
     let indexOf;
-    groups.findIndex((grupo, index) => {
+    grupos.findIndex((grupo, index) => {
       if (grupo.id === idGrupoSelecionado) {
         indexOf = index;
       }
     });
 
-    if (groups.length - 1 > indexOf) {
-      setIdGrupoSelecionado(groups[indexOf + 1].id);
+    if (grupos.length - 1 > indexOf) {
+      dispatch(setIdGrupoSelecionado(grupos[indexOf + 1].id));
     }
 
-    if (buttonCompraText === 'Finalizar Compra') {
+    if (buttonProximoFinalizar === 'Finalizar Compra') {
       window.location.href = '/login';
     }
   };
@@ -57,7 +59,6 @@ function Carrinho({
     const id = event.target.getAttribute('id');
     const date = event.target.getAttribute('date');
     dispatch(setQtdCarrinho({ date, id, operacao: 'delete' }));
-    console.log('GKAY??? ', Object.keys(listItens).length);
   };
 
   // TODO: mudar a setinha de direção quando clicar no para abrir o carrinho
@@ -146,6 +147,10 @@ function Carrinho({
       const distanciaDoElementoAoTop = -2;
       divCarrinhoFull.style.top = divDetailsCarrinho.getBoundingClientRect().top + document.querySelector('.container-carrinho').clientHeight - 120 <= distanciaDoElementoAoTop ? 0 : '-90px';
     });
+
+    window.addEventListener('resize', () => (
+      dispatch(setTextButtonOutroDia(window.innerWidth < 546 ? 'Outro dia' : 'Comprar para outro dia'))
+    ));
   }, []);
 
   return (
@@ -193,7 +198,7 @@ function Carrinho({
       </div>
       <div className={`container-btn-carrinho ${isOpen ? 'aberto-com-produtos' : 'fechado'}`}>
         <button className="btn-carrinho btn-carrinho-buy-other-day" onClick={(event) => { event.stopPropagation(); window.location.href = '/'; }}>
-          <span className="outro-dia">Comprar para outro dia</span>
+          <span className="outro-dia">{buttonOutroDia}</span>
           <svg stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" style={{ width: '17px', height: '17px', marginRight: '5px' }} height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
             <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
             <line x1="16" y1="2" x2="16" y2="6" />
@@ -202,7 +207,7 @@ function Carrinho({
           </svg>
         </button>
         <button className="btn-carrinho btn-carrinho-next" onClick={next}>
-          {buttonCompraText}
+          {buttonProximoFinalizar}
           <svg stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" style={{ width: '21px', height: '21px', marginTop: '2px' }} height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
             <line x1="5" y1="12" x2="19" y2="12" />
             <polyline points="12 5 19 12 12 19" />

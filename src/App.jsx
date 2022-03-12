@@ -7,6 +7,7 @@ import PosFooter from './components/PosFooter';
 import Calendario from './pages/Calendario';
 import './App.css';
 import CarrinhoTop from './components/CarrinhoTop';
+import Login from './pages/Login';
 
 function App() {
   return (
@@ -17,8 +18,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Calendario />} />
           <Route path="/:url" element={<Corpo />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
-
         <Footer />
       </BrowserRouter>
       <PosFooter />

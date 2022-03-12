@@ -1,8 +1,7 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
-
-import { setIdGrupoSelecionado } from './tab';
+import { setIdGrupoSelecionado } from './tabCards';
 
 /* eslint-disable no-param-reassign */
 const { createSlice } = require('@reduxjs/toolkit');
@@ -11,12 +10,13 @@ const slice = createSlice({
   name: 'fetchGetApiIngressos',
   initialState: {
     loading: false,
+    data: null,
+    error: null,
     date: {
       year: '',
       month: '',
       day: '',
     },
-    error: null,
   },
   reducers: {
     fetchStarted: (state) => {

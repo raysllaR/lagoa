@@ -15,16 +15,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setListItens, setQtdCarrinho } from '../../store/carrinhoData';
 import './styles/Cards.css';
 
-function Cards({
-  itens, qtdParcelamentos,
-}) {
+function Cards() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const { day, month, year } = state.fetchGetApiIngressos.date;
+  const { maximoQtdParcelamento } = state.fetchGetApiIngressos.data;
+  const { listCards } = state.tabCards;
   const { listItens } = state.carrinho;
   const date = `${year}-${month}-${day}`;
   let condicao = false;
   let isEqualsValorOriginal = false;
+
+  console.log('O Q TA ROLANDO? ', listCards);
 
   const itemMaisVendido = (arrayGrupos, arraIdGruposMaisVendidos) => arrayGrupos.find((grupo) => arraIdGruposMaisVendidos.includes(grupo));
 
@@ -60,7 +62,7 @@ function Cards({
   return (
     <section className="cards">
       <div className="container-cards container-cards-ativo">
-        {itens.map((item) => (
+        {listCards.map((item) => (
           <div key={item.iditens} className="card">
             {saveToLocaleStringRedux(listItens)}
             { isEqualsValorOriginal = (item.tarifarios[0].valor === item.valorOriginal) }
@@ -79,7 +81,7 @@ function Cards({
                       <span>R$</span>
                       <div className="valor-produto">{toLocaleStringMoedaBR(item.tarifarios[0].valor, false)}</div>
                     </div>
-                    { isEqualsValorOriginal && <div className="max-parcelamento">{`em até ${qtdParcelamentos}x`}</div>}
+                    { isEqualsValorOriginal && <div className="max-parcelamento">{`em até ${maximoQtdParcelamento}x`}</div>}
                   </div>
                 </div>
                 <div className="descricao-card">
@@ -108,7 +110,6 @@ function Cards({
                 </div>
               </div>
               {condicao = !(listItens[date] && listItens[date][item.iditens])}
-              {console.log('CONDICAO O CARAI ', condicao)}
               <div className={`container-btn-card ${condicao && 'isComprar'}`}>
                 <div className={`btn-comprar-card ${condicao && 'isComprar'}`} onClick={(event) => changeValueItemCardAndAddToCarrinho(event, item, 'add')}>
                   <div className={`btn btn-subtrair ${condicao && 'isComprarBtn'}`} onClick={(event) => changeValueItemCardAndAddToCarrinho(event, item, 'sub')}>-</div>

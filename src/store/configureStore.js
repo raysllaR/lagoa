@@ -4,15 +4,15 @@ import {
   getDefaultMiddleware,
 } from '@reduxjs/toolkit';
 import carrinho from './carrinhoData';
-import modal from './modal';
 import logger from './middleware/logger';
-import tab from './tab';
+import tabCards from './tabCards';
 import fetchGetApiIngressos from './dadosApi';
+import buttonsText from './buttonsText';
 
 const middleware = [...getDefaultMiddleware(), logger];
 
 const reducer = combineReducers({
-  carrinho, modal, fetchGetApiIngressos, tab,
+  carrinho, fetchGetApiIngressos, tabCards, buttonsText,
 });
 const store = configureStore({ reducer, middleware });
 
