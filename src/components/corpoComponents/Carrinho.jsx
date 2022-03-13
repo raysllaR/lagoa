@@ -1,3 +1,4 @@
+/* eslint-disable no-return-assign */
 /* eslint-disable no-unused-expressions */
 /* eslint-disable no-const-assign */
 /* eslint-disable no-shadow */
@@ -76,11 +77,11 @@ function Carrinho() {
     } else {
       Object.keys(listItens).forEach((key) => {
         [year, month, day] = key.split('-');
-        month = new Date(date).toLocaleString('default', { month: 'long' });
+        let monthString = new Date(`${year}-${month}-${day}`).toLocaleString('default', { month: 'long' });
 
         divProdutosCarrinho.innerHTML += `
-          <div style="text-align: center; padding: 5px; padding-top: 20px; box-sizing: border-box; color: rgb(90, 108, 124); font-size: 1.1em; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; transition: all 0.2s ease 0s;">
-            ${day} de ${month} de ${year}<span class="" style="color: rgb(45, 157, 1); background-color: rgb(241, 255, 235); font-size: 0.87rem; padding: 4px 13px; border-radius: 6px; margin: 0px 5px; cursor: pointer;">${key === date ? 'Dia selecionado' : 'Alterar'}</span>
+          <div class="dateCarrinho" style="text-align: center; padding: 5px; padding-top: 20px; box-sizing: border-box; color: rgb(90, 108, 124); font-size: 1.1em; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; transition: all 0.2s ease 0s;">
+            ${day} de ${monthString} de ${year}<span class="" value="${day}-${month}-${year}" style="color: rgb(45, 157, 1); background-color: rgb(241, 255, 235); font-size: 0.87rem; padding: 4px 13px; border-radius: 6px; margin: 0px 5px; cursor: pointer;">${key === date ? 'Dia selecionado' : 'Alterar'}</span>
           </div>
         `;
         Object.keys(listItens[key]).forEach((keyItem) => {
@@ -100,6 +101,12 @@ function Carrinho() {
         });
       });
 
+      document.querySelectorAll('.dateCarrinho').forEach((date) => date.addEventListener('click', ({ target }) => {
+        if (target.textContent === 'Alterar') {
+          window.location.href = `http://localhost:3000/lagoa/#/ingressos/${window.btoa(target.getAttribute('value'))}`;
+          window.location.reload();
+        }
+      }));
       document.querySelectorAll('.icon-excluir-item-lista-produtos-carrinho').forEach((item) => item.addEventListener('click', excluirItemCarrinho));
     }
   };
