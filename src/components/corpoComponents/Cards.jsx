@@ -26,8 +26,6 @@ function Cards() {
   let condicao = false;
   let isEqualsValorOriginal = false;
 
-  console.log('O Q TA ROLANDO? ', listCards);
-
   const itemMaisVendido = (arrayGrupos, arraIdGruposMaisVendidos) => arrayGrupos.find((grupo) => arraIdGruposMaisVendidos.includes(grupo));
 
   const toLocaleStringMoedaBR = (value, withType) => {
@@ -72,7 +70,6 @@ function Cards() {
               <div className="container-descricao-card">
                 <div className="container-nome-valor-produto-card">
                   <div className="nome-produto">
-                    $
                     {item.nome}
                   </div>
                   <div className="container-valor-produto">

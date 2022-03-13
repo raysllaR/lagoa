@@ -24,7 +24,7 @@ function Tabs() {
     listItensCard.sort((obj1, obj2) => (((obj1[idGrupoSelecionado] > obj2[idGrupoSelecionado])) ? -1 : 1));
     dispatch(setListCards(listItensCard));
     console.log('MDS CADE A LISTA? ', listItensCard);
-  }, []);
+  }, [idGrupoSelecionado]);
 
   return (
     <div className={style.Tabs} id="tabs">
