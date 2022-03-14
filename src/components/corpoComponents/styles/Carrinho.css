@@ -235,6 +235,7 @@
     width: 100%;
     flex-direction: column;
     flex-wrap: nowrap;
+    position: relative;
   }
   
   .seta-carrinho {

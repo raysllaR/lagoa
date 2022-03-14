@@ -1,6 +1,7 @@
 /* eslint-disable react/destructuring-assignment */
 import React from 'react';
 
+// Copia descarada da pagina oroginal, ctrl+c e ctrl+v
 function MessageError() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>

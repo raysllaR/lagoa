@@ -20,6 +20,7 @@ import Tabs from '../components/corpoComponents/Tabs';
 import { setTextProximoFinalizar } from '../store/buttonsText';
 import { openOrCloseCarrinho, setListItens } from '../store/carrinhoData';
 import { fetchGetDayIgressos } from '../store/dadosApi';
+import { setIdGrupoSelecionado } from '../store/tabCards';
 import style from './styles/Corpo.module.css';
 
 function Corpo() {
@@ -28,19 +29,10 @@ function Corpo() {
   const { loading, data } = state.fetchGetApiIngressos;
   const { error } = state.fetchGetApiIngressos;
   const { idGrupoSelecionado, listCards } = state.tabCards;
+  const { buttonProximoFinalizar } = state.buttonsText;
 
   React.useEffect(() => {
     dispatch(fetchGetDayIgressos());
-
-    try {
-      if (localStorage.getItem('itensListaRedux')) {
-        dispatch(setListItens(JSON.parse(localStorage.getItem('itensListaRedux'))));
-      }
-    } catch (e) {
-      localStorage.setItem('itensListaRedux', []);
-      dispatch(setListItens([]));
-      setItensCard({});
-    }
   }, []);
 
   React.useEffect(() => {
@@ -57,13 +49,32 @@ function Corpo() {
     }
   }, [data, idGrupoSelecionado]);
 
+  const next = (event) => {
+    event.stopPropagation();
+    const { grupos } = state.fetchGetApiIngressos.data;
+    let indexOf;
+    grupos.findIndex((grupo, index) => {
+      if (grupo.id === idGrupoSelecionado) {
+        indexOf = index;
+      }
+    });
+
+    if (grupos.length - 1 > indexOf) {
+      dispatch(setIdGrupoSelecionado(grupos[indexOf + 1].id));
+    }
+
+    if (buttonProximoFinalizar === 'Finalizar Compra') {
+      window.location.href = '/login/carrinho';
+    }
+  };
+
   if (error) { return <MessageError error={error} />; }
   if (loading) { return <Loading />; } // O loading só encerra quando os cards tiverem itens para ser exibidos
   if (!data) { return null; }
 
   return (
     <section className={style.ContainerCorpoSite}>
-      <Carrinho />
+      <Carrinho next={next} />
       <Tabs />
       {
         listCards && <Cards />

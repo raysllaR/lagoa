@@ -11,7 +11,8 @@ import Calendario from './pages/Calendario';
 import './App.css';
 import CarrinhoTop from './components/CarrinhoTop';
 import Login from './pages/Login';
-import { openOrCloseCarrinho } from './store/carrinhoData';
+import { openOrCloseCarrinho, setListItens } from './store/carrinhoData';
+import MessageError from './components/corpoComponents/MessageError';
 
 function App() {
   const isOpen = useSelector((state) => state.carrinho.open);
@@ -23,6 +24,17 @@ function App() {
     }
   };
 
+  React.useEffect(() => {
+    try {
+      if (localStorage.getItem('itensListaRedux')) {
+        dispatch(setListItens(JSON.parse(localStorage.getItem('itensListaRedux'))));
+      }
+    } catch (e) {
+      localStorage.setItem('itensListaRedux', []);
+      dispatch(setListItens([]));
+    }
+  }, []);
+
   return (
     <div
       onClick={close}
@@ -33,7 +45,11 @@ function App() {
         <Routes>
           <Route path="/" element={<Calendario />} />
           <Route path="/:url" element={<Corpo />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/login">
+            <Route path="/" element={<Login />} />
+            <Route path="/:id" element={<Login isCarrinho />} />
+          </Route>
+          <Route path="*" element={<MessageError />} />
         </Routes>
         <Footer />
       </BrowserRouter>

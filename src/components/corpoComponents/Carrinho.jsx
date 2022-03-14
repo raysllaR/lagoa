@@ -22,38 +22,17 @@ import {
   setQuantodadeItensCarrinho,
   setValorCarrinho,
 } from '../../store/carrinhoData';
-import { setIdGrupoSelecionado } from '../../store/tabCards';
 import './styles/Carrinho.css';
 
-function Carrinho() {
+function Carrinho({ next, pageLogin, changeLogo }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   let { day, month, year } = state.fetchGetApiIngressos.date;
   const date = `${year}-${month}-${day}`; // No primeiro dia do mes, se não colocar a hora ele retorna pro ultimo dia do mes anterior
   month = new Date(`${date} 00:00:00`).toLocaleString('default', { month: 'long' });
-  const { grupos } = state.fetchGetApiIngressos.data;
-  const { idGrupoSelecionado } = state.tabCards;
   const isOpen = state.carrinho.open;
   const { listItens, value, quantidade } = state.carrinho;
   const { buttonOutroDia, buttonProximoFinalizar } = state.buttonsText;
-
-  const next = (event) => {
-    event.stopPropagation();
-    let indexOf;
-    grupos.findIndex((grupo, index) => {
-      if (grupo.id === idGrupoSelecionado) {
-        indexOf = index;
-      }
-    });
-
-    if (grupos.length - 1 > indexOf) {
-      dispatch(setIdGrupoSelecionado(grupos[indexOf + 1].id));
-    }
-
-    if (buttonProximoFinalizar === 'Finalizar Compra') {
-      window.location.href = '/login';
-    }
-  };
 
   const excluirItemCarrinho = (event) => {
     event.stopPropagation();
@@ -135,14 +114,14 @@ function Carrinho() {
 
     setasCarrinho.forEach((seta) => seta.classList.toggle('para-cima'));
 
-    if (isOpen) {
+    if (isOpen && !pageLogin) {
       if (divCarrinho.classList.contains('fechado')) {
         document.querySelector('#tabs').style.marginTop = '200px';
         if (Object.keys(listItens).length === 0) {
           divContainerBtnCarrinho.style.display = 'none';
         }
       }
-    } else {
+    } else if (document.querySelector('#tabs')) {
       document.querySelector('#tabs').style.marginTop = '10px';
       if (!divContainerBtnCarrinho.classList.contains('aberto-com-produtos')) {
         divContainerBtnCarrinho.style.display = 'flex';
@@ -153,10 +132,12 @@ function Carrinho() {
   React.useEffect(() => {
     const divCarrinhoFull = document.querySelector('.details-carrinho-full');
     const divDetailsCarrinho = document.querySelector('.details-carrinho');
-    window.addEventListener('scroll', () => {
-      const distanciaDoElementoAoTop = -2;
-      divCarrinhoFull.style.top = divDetailsCarrinho.getBoundingClientRect().top + document.querySelector('.container-carrinho').clientHeight - 120 <= distanciaDoElementoAoTop ? 0 : '-90px';
-    });
+    if (pageLogin) {
+      window.addEventListener('scroll', () => {
+        const distanciaDoElementoAoTop = -2;
+        divCarrinhoFull.style.top = divDetailsCarrinho.getBoundingClientRect().top + document.querySelector('.container-carrinho').clientHeight - 120 <= distanciaDoElementoAoTop ? 0 : '-90px';
+      });
+    }
 
     window.addEventListener('resize', () => (
       dispatch(setTextButtonOutroDia(window.innerWidth < 546 ? 'Outro dia' : 'Comprar para outro dia'))
@@ -165,25 +146,33 @@ function Carrinho() {
 
   return (
     <div
+      style={pageLogin ? { margin: '0 auto', marginBottom: '15px' } : {}}
       className={`container-carrinho ${isOpen ? 'aberto fechado' : 'fechado'} `}
       onClick={(event) => {
         event.stopPropagation();
-        dispatch(openOrCloseCarrinho());
+        if (!pageLogin) {
+          dispatch(openOrCloseCarrinho());
+        }
       }}
     >
       <div className="container-details-carrinho">
-        <div className="details-carrinho">
+        <div className="details-carrinho" style={pageLogin ? { width: '100%', maxWidth: '550px' } : {}}>
           <div className="container-data-carrinho">
-            <div className="dia-data-carrinho full">{day}</div>
-            <div className="separador-data-carrinho full" />
-            <div className="conainer-mes-ano-carrinho">
-              <div className="mes-data-carrinho full">{month}</div>
-              <div className="ano-mes-carrinhos">
-                de
-                {' '}
-                {year}
+            {changeLogo && <img width={114} src="https://sofaltaeuimagens.s3-sa-east-1.amazonaws.com/maiseu.svg" alt="logo so falta eu carrinho" />}
+            {!changeLogo && (
+            <>
+              <div className="dia-data-carrinho full">{day}</div>
+              <div className="separador-data-carrinho full" />
+              <div className="conainer-mes-ano-carrinho">
+                <div className="mes-data-carrinho full">{month}</div>
+                <div className="ano-mes-carrinhos">
+                  de
+                  {' '}
+                  {year}
+                </div>
               </div>
-            </div>
+            </>
+            )}
           </div>
           <div className="container-itens-carrinho">
             <div className="word-total-carrinho">Total</div>
@@ -202,14 +191,28 @@ function Carrinho() {
               </div>
             </div>
             <div className="container-detail-botton-carrinho">
-              <svg className="seta-carrinho para-baixo para-cima" stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 24 24" style={{ color: 'rgb(90, 108, 124)', width: '25px', height: '25px' }} height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z" /></svg>
+              <svg
+                className="seta-carrinho para-baixo para-cima"
+                stroke="currentColor"
+                fill="currentColor"
+                strokeWidth="0"
+                viewBox="0 0 24 24"
+                style={{
+                  color: 'rgb(90, 108, 124)', width: '25px', height: '25px', display: (pageLogin) ? 'none' : '',
+                }}
+                height="1em"
+                width="1em"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z" />
+              </svg>
               <div className="detail-botton-carrinho" />
             </div>
           </div>
         </div>
         <div className={`lista-produtos-carrinho ${isOpen ? 'aberto' : 'fechado'}`}><span className="nenhum-produto">Nenhum produto adicionado ao carrinho</span></div>
       </div>
-      <div className={`container-btn-carrinho ${isOpen ? 'aberto-com-produtos' : 'fechado'}`}>
+      <div className={`container-btn-carrinho ${isOpen ? 'aberto-com-produtos' : 'fechado'}`} style={pageLogin ? { display: 'none' } : {}}>
         <button className="btn-carrinho btn-carrinho-buy-other-day" onClick={(event) => { event.stopPropagation(); window.location.href = '/'; }}>
           <span className="outro-dia">{buttonOutroDia}</span>
           <svg stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" style={{ width: '17px', height: '17px', marginRight: '5px' }} height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">

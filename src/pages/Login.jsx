@@ -1,7 +1,12 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-shadow */
 /* eslint-disable no-return-assign */
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import Carrinho from '../components/corpoComponents/Carrinho';
+import { setQuantodadeItensCarrinho, setValorCarrinho } from '../store/carrinhoData';
 
-function Login() {
+function Login({ isCarrinho }) {
   React.useEffect(() => {
     const initLogin = async () => {
       await window.SofaltaEu.Init({
@@ -27,8 +32,26 @@ function Login() {
     initLogin();
   });
 
+  const state = useSelector((state) => state);
+  const dispatch = useDispatch();
+  console.log('VRUM VRUM VRUM ', state.carrinho);
+
+  React.useEffect(() => {
+    dispatch(setValorCarrinho());
+    dispatch(setQuantodadeItensCarrinho());
+  });
+
+  React.useEffect(() => {
+    console.log('HASHHHH', window.location.hash);
+  }, [window.location.hash]);
+
   return (
-    <div id="entrySofaltaEu" />
+    <>
+      {
+        (state.carrinho.quantidade !== 0 && isCarrinho) && <Carrinho pageLogin changeLogo />
+      }
+      <div id="entrySofaltaEu" />
+    </>
   );
 }
 
