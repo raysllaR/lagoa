@@ -16,7 +16,14 @@ function Login({ isCarrinho }) {
         logo: 'https://sofaltaeuimagens.s3-sa-east-1.amazonaws.com/sofaltaeu.svg',
         content: document.getElementById('entrySofaltaEu'),
         empreendimento: 'lagoa',
-        callback: (token) => ((token) ? window.location.href = 'http://localhost:3000/' : initLogin()),
+        callback: (token) => {
+          if (token) {
+            localStorage.setItem('token', token);
+            window.location.href = 'http://localhost:3000/';
+          } else {
+            initLogin();
+          }
+        },
         dominioSFE: 'https://sofalta.eu',
         callbackUsuarioExiste: () => {},
         imagemSucesso: 'https://sofaltaeuimagens.s3-sa-east-1.amazonaws.com/sofaltaeu.svg',
