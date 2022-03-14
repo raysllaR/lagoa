@@ -163,7 +163,10 @@ function Carrinho() {
   return (
     <div
       className={`container-carrinho ${isOpen ? 'aberto fechado' : 'fechado'} `}
-      onClick={() => dispatch(openOrCloseCarrinho())}
+      onClick={(event) => {
+        event.stopPropagation();
+        dispatch(openOrCloseCarrinho());
+      }}
     >
       <div className="container-details-carrinho">
         <div className="details-carrinho">

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-unused-expressions */
 /* eslint-disable no-shadow */
 /* eslint-disable jsx-a11y/alt-text */
@@ -12,7 +13,7 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setListItens, setQtdCarrinho } from '../../store/carrinhoData';
+import { openOrCloseCarrinho, setListItens, setQtdCarrinho } from '../../store/carrinhoData';
 import './styles/Cards.css';
 
 function Cards() {
@@ -25,6 +26,9 @@ function Cards() {
   const date = `${year}-${month}-${day}`;
   let condicao = false;
   let isEqualsValorOriginal = false;
+  let idadeMinima;
+  let idadeMaxima;
+  let condicaoIdade;
 
   const itemMaisVendido = (arrayGrupos, arraIdGruposMaisVendidos) => arrayGrupos.find((grupo) => arraIdGruposMaisVendidos.includes(grupo));
 
@@ -38,6 +42,10 @@ function Cards() {
 
   const changeValueItemCardAndAddToCarrinho = (event, item, operacao) => {
     event.stopPropagation();
+
+    if (state.carrinho.open) {
+      dispatch(openOrCloseCarrinho());
+    }
     const id = item.iditens;
 
     if (listItens[date] && listItens[date][id]) {
@@ -55,6 +63,20 @@ function Cards() {
 
   const saveToLocaleStringRedux = (listItens) => {
     localStorage.setItem('itensListaRedux', JSON.stringify(listItens));
+  };
+
+  const putValueInIdade = (item) => {
+    if (item.itens.ingressos.length) {
+      idadeMinima = item.itens.ingressos[0].idade_minima;
+      idadeMaxima = item.itens.ingressos[0].idade_maxima;
+      if (idadeMinima && idadeMaxima) {
+        condicaoIdade = `${idadeMinima} a ${idadeMaxima} anos`;
+      } else if (idadeMaxima && !idadeMinima) {
+        condicaoIdade = `Até ${idadeMaxima} anos`;
+      } else if (!idadeMaxima && idadeMinima) {
+        condicaoIdade = `A partir de ${idadeMinima} anos`;
+      }
+    }
   };
 
   return (
@@ -86,14 +108,15 @@ function Cards() {
                 </div>
               </div>
               <div className="container-regras-card">
-                <div className="regra-card-ativo">
+                {putValueInIdade(item)}
+                <div className={` ${(idadeMinima || idadeMaxima) ? 'regra-card-ativo' : 'regra-card-inativo'} `}>
                   <svg stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" height="23px" width="20px" xmlns="http://www.w3.org/2000/svg">
                     <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
                     <circle cx="9" cy="7" r="4" />
                     <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
                     <path d="M16 3.13a4 4 0 0 1 0 7.75" />
                   </svg>
-                  <span className="regra-idade">{'A partir de 11 anos' /*  ${item.itens.ingressos[0]['idade_minima']} */}</span>
+                  <span className="regra-idade">{condicaoIdade}</span>
                 </div>
                 <div className="regra-card-ativo">
                   <svg className="regra-condicao" stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" height="23px" width="20px" xmlns="http://www.w3.org/2000/svg">

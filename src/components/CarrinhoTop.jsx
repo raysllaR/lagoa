@@ -20,7 +20,8 @@ function CarrinhoTop() {
   return (
     <div
       className="details-carrinho-full"
-      onClick={() => {
+      onClick={(event) => {
+        event.stopPropagation();
         !isOpen && dispatch(openOrCloseCarrinho());
         window.scrollTo(0, 345);
       }}

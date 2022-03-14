@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 /* eslint-disable import/named */
@@ -16,7 +18,7 @@ import Loading from '../components/corpoComponents/Loading';
 import MessageError from '../components/corpoComponents/MessageError';
 import Tabs from '../components/corpoComponents/Tabs';
 import { setTextProximoFinalizar } from '../store/buttonsText';
-import { setListItens } from '../store/carrinhoData';
+import { openOrCloseCarrinho, setListItens } from '../store/carrinhoData';
 import { fetchGetDayIgressos } from '../store/dadosApi';
 import style from './styles/Corpo.module.css';
 
