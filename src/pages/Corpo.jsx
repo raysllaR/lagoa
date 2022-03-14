@@ -34,6 +34,17 @@ function Corpo() {
 
   React.useEffect(() => {
     dispatch(fetchGetDayIgressos());
+
+    try {
+      if (localStorage.getItem('itensListaRedux')) {
+        dispatch(setListItens(JSON.parse(localStorage.getItem('itensListaRedux'))));
+        dispatch(setValorCarrinho());
+        dispatch(setQuantodadeItensCarrinho());
+      }
+    } catch (e) {
+      localStorage.setItem('itensListaRedux', []);
+      dispatch(setListItens([]));
+    }
   }, []);
 
   React.useEffect(() => {
