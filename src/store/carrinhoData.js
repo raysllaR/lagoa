@@ -47,6 +47,7 @@ const slice = createSlice({
           delete: () => {
             delete listItens[date][id];
             (!Object.keys(listItens[date]).length) && delete listItens[date];
+            localStorage.setItem('itensListaRedux', JSON.stringify(listItens));
           },
         };
 

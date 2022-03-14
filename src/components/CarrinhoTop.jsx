@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable prefer-const */
 /* eslint-disable no-shadow */
 /* eslint-disable no-unused-expressions */
@@ -8,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { openOrCloseCarrinho } from '../store/carrinhoData';
 import './corpoComponents/styles/Carrinho.css';
 
-function CarrinhoTop() {
+function CarrinhoTop({ isCalendario }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const isOpen = state.carrinho.open;
@@ -27,16 +28,22 @@ function CarrinhoTop() {
       }}
     >
       <div className="container-data-carrinho">
-        <div className="dia-data-carrinho full">{day}</div>
-        <div className="separador-data-carrinho full" />
-        <div className="conainer-mes-ano-carrinho">
-          <div className="mes-data-carrinho full">{month}</div>
-          <div className="ano-mes-carrinhos">
-            de
-            {' '}
-            {year}
+        {(isCalendario) && <img width={114} src="https://sofaltaeuimagens.s3-sa-east-1.amazonaws.com/maiseu.svg" alt="logo so falta eu carrinho" />}
+        {!isCalendario && (
+        <>
+          <div className="dia-data-carrinho full">{day}</div>
+          <div className="separador-data-carrinho full" />
+          <div className="conainer-mes-ano-carrinho">
+            <div className="mes-data-carrinho full">{month}</div>
+            <div className="ano-mes-carrinhos">
+              de
+              {' '}
+              {year}
+            </div>
           </div>
-        </div>
+        </>
+        )}
+
       </div>
       <div className="container-itens-carrinho">
         <div className="word-total-carrinho">Total</div>

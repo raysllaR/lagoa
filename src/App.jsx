@@ -9,9 +9,10 @@ import Corpo from './pages/Corpo';
 import PosFooter from './components/PosFooter';
 import Calendario from './pages/Calendario';
 import './App.css';
-import CarrinhoTop from './components/CarrinhoTop';
 import Login from './pages/Login';
-import { openOrCloseCarrinho, setListItens } from './store/carrinhoData';
+import {
+  openOrCloseCarrinho, setListItens, setQuantodadeItensCarrinho, setValorCarrinho,
+} from './store/carrinhoData';
 import MessageError from './components/corpoComponents/MessageError';
 
 function App() {
@@ -28,6 +29,8 @@ function App() {
     try {
       if (localStorage.getItem('itensListaRedux')) {
         dispatch(setListItens(JSON.parse(localStorage.getItem('itensListaRedux'))));
+        dispatch(setValorCarrinho());
+        dispatch(setQuantodadeItensCarrinho());
       }
     } catch (e) {
       localStorage.setItem('itensListaRedux', []);
@@ -41,7 +44,6 @@ function App() {
     >
       <BrowserRouter>
         <Header />
-        <CarrinhoTop />
         <Routes>
           <Route path="/" element={<Calendario />} />
           <Route path="/:url" element={<Corpo />} />

@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable no-return-assign */
 /* eslint-disable no-unused-expressions */
 /* eslint-disable no-const-assign */
@@ -15,7 +16,7 @@
 /* eslint-disable max-len */
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setTextButtonOutroDia } from '../../store/buttonsText';
+import { setTextButtonOutroDia, setTextProximoFinalizar } from '../../store/buttonsText';
 import {
   openOrCloseCarrinho,
   setQtdCarrinho,
@@ -24,7 +25,9 @@ import {
 } from '../../store/carrinhoData';
 import './styles/Carrinho.css';
 
-function Carrinho({ next, pageLogin, changeLogo }) {
+function Carrinho({
+  next, pageLogin, changeLogo, isCalendario,
+}) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   let { day, month, year } = state.fetchGetApiIngressos.date;
@@ -38,6 +41,8 @@ function Carrinho({ next, pageLogin, changeLogo }) {
     event.stopPropagation();
     const id = event.target.getAttribute('id');
     const date = event.target.getAttribute('date');
+    console.log('DATE??', date);
+    console.log('ID??', id);
     dispatch(setQtdCarrinho({ date, id, operacao: 'delete' }));
   };
 
@@ -86,7 +91,9 @@ function Carrinho({ next, pageLogin, changeLogo }) {
         if (target.textContent === 'Alterar') {
           dispatch(openOrCloseCarrinho());
           window.location.href = `http://localhost:3000/lagoa/#/ingressos/${window.btoa(target.getAttribute('value'))}`;
-          window.location.reload();
+          if (!isCalendario) {
+            window.location.reload(); // Precisa do reloading para a page do corpo, mas não para a do calendario
+          }
         }
       }));
       document.querySelectorAll('.icon-excluir-item-lista-produtos-carrinho').forEach((item) => item.addEventListener('click', excluirItemCarrinho));
@@ -114,7 +121,7 @@ function Carrinho({ next, pageLogin, changeLogo }) {
 
     setasCarrinho.forEach((seta) => seta.classList.toggle('para-cima'));
 
-    if (isOpen && !pageLogin) {
+    if (isOpen && !pageLogin && !isCalendario) {
       if (divCarrinho.classList.contains('fechado')) {
         document.querySelector('#tabs').style.marginTop = '200px';
         if (Object.keys(listItens).length === 0) {
@@ -132,21 +139,26 @@ function Carrinho({ next, pageLogin, changeLogo }) {
   React.useEffect(() => {
     const divCarrinhoFull = document.querySelector('.details-carrinho-full');
     const divDetailsCarrinho = document.querySelector('.details-carrinho');
-    if (pageLogin) {
-      window.addEventListener('scroll', () => {
-        const distanciaDoElementoAoTop = -2;
-        divCarrinhoFull.style.top = divDetailsCarrinho.getBoundingClientRect().top + document.querySelector('.container-carrinho').clientHeight - 120 <= distanciaDoElementoAoTop ? 0 : '-90px';
-      });
-    }
+
+    window.addEventListener('scroll', () => {
+      const distanciaDoElementoAoTop = -2;
+      divCarrinhoFull.style.top = divDetailsCarrinho.getBoundingClientRect().top + document.querySelector('.container-carrinho').clientHeight - 120 <= distanciaDoElementoAoTop ? 0 : '-90px';
+    });
 
     window.addEventListener('resize', () => (
       dispatch(setTextButtonOutroDia(window.innerWidth < 546 ? 'Outro dia' : 'Comprar para outro dia'))
     ));
+
+    if (isCalendario) {
+      dispatch(setTextProximoFinalizar('Finalizar Compra'));
+    }
   }, []);
 
   return (
     <div
-      style={pageLogin ? { margin: '0 auto', marginBottom: '15px' } : {}}
+      style={pageLogin || isCalendario ? {
+        margin: '0 auto', marginBottom: (pageLogin || isCalendario) ? (pageLogin ? '15px' : '-45px') : '0', left: 0, right: 0,
+      } : {}}
       className={`container-carrinho ${isOpen ? 'aberto fechado' : 'fechado'} `}
       onClick={(event) => {
         event.stopPropagation();
@@ -158,8 +170,9 @@ function Carrinho({ next, pageLogin, changeLogo }) {
       <div className="container-details-carrinho">
         <div className="details-carrinho" style={pageLogin ? { width: '100%', maxWidth: '550px' } : {}}>
           <div className="container-data-carrinho">
-            {changeLogo && <img width={114} src="https://sofaltaeuimagens.s3-sa-east-1.amazonaws.com/maiseu.svg" alt="logo so falta eu carrinho" />}
-            {!changeLogo && (
+            {(changeLogo || isCalendario) && <img width={114} src="https://sofaltaeuimagens.s3-sa-east-1.amazonaws.com/maiseu.svg" alt="logo so falta eu carrinho" />}
+            {(!changeLogo && !isCalendario
+            ) && (
             <>
               <div className="dia-data-carrinho full">{day}</div>
               <div className="separador-data-carrinho full" />
@@ -212,8 +225,8 @@ function Carrinho({ next, pageLogin, changeLogo }) {
         </div>
         <div className={`lista-produtos-carrinho ${isOpen ? 'aberto' : 'fechado'}`}><span className="nenhum-produto">Nenhum produto adicionado ao carrinho</span></div>
       </div>
-      <div className={`container-btn-carrinho ${isOpen ? 'aberto-com-produtos' : 'fechado'}`} style={pageLogin ? { display: 'none' } : {}}>
-        <button className="btn-carrinho btn-carrinho-buy-other-day" onClick={(event) => { event.stopPropagation(); window.location.href = '/'; }}>
+      <div className={`container-btn-carrinho ${isOpen ? 'aberto-com-produtos' : 'fechado'}`} style={pageLogin ? { display: 'none' } : (!isOpen && isCalendario ? { display: 'none' } : {})}>
+        <button className="btn-carrinho btn-carrinho-buy-other-day" style={(isCalendario) ? { display: 'none' } : {}} onClick={(event) => { event.stopPropagation(); window.location.href = '/'; }}>
           <span className="outro-dia">{buttonOutroDia}</span>
           <svg stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" style={{ width: '17px', height: '17px', marginRight: '5px' }} height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
             <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
@@ -222,7 +235,7 @@ function Carrinho({ next, pageLogin, changeLogo }) {
             <line x1="3" y1="10" x2="21" y2="10" />
           </svg>
         </button>
-        <button className="btn-carrinho btn-carrinho-next" onClick={next}>
+        <button className={`btn-carrinho btn-carrinho-next ${isCalendario ? 'isCalendario' : ''}`} onClick={next}>
           {buttonProximoFinalizar}
           <svg stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" style={{ width: '21px', height: '21px', marginTop: '2px' }} height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
             <line x1="5" y1="12" x2="19" y2="12" />

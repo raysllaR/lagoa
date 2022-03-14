@@ -348,6 +348,12 @@
     background-color: #c4cdd4;
   }
   
+  @media (min-width: 451px) {
+    .isCalendario {
+      width: 50% !important;
+      margin: 0 auto !important;
+    }
+  }
 
   @media (max-width: 450px) {
     .container-btn-carrinho {

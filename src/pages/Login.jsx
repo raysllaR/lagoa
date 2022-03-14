@@ -2,9 +2,8 @@
 /* eslint-disable no-shadow */
 /* eslint-disable no-return-assign */
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import Carrinho from '../components/corpoComponents/Carrinho';
-import { setQuantodadeItensCarrinho, setValorCarrinho } from '../store/carrinhoData';
 
 function Login({ isCarrinho }) {
   React.useEffect(() => {
@@ -33,12 +32,6 @@ function Login({ isCarrinho }) {
   });
 
   const state = useSelector((state) => state);
-  const dispatch = useDispatch();
-
-  React.useEffect(() => {
-    dispatch(setValorCarrinho());
-    dispatch(setQuantodadeItensCarrinho());
-  });
 
   return (
     <>

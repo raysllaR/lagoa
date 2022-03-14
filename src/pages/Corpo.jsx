@@ -12,6 +12,7 @@
 /* eslint-disable no-shadow */
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import CarrinhoTop from '../components/CarrinhoTop';
 import Cards from '../components/corpoComponents/Cards';
 import Carrinho from '../components/corpoComponents/Carrinho';
 import Loading from '../components/corpoComponents/Loading';
@@ -73,13 +74,16 @@ function Corpo() {
   if (!data) { return null; }
 
   return (
-    <section className={style.ContainerCorpoSite}>
-      <Carrinho next={next} />
-      <Tabs />
-      {
+    <>
+      <CarrinhoTop />
+      <section className={style.ContainerCorpoSite}>
+        <Carrinho next={next} />
+        <Tabs />
+        {
         listCards && <Cards />
       }
-    </section>
+      </section>
+    </>
   );
 }
 
