@@ -29,8 +29,8 @@ function Carrinho() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   let { day, month, year } = state.fetchGetApiIngressos.date;
-  const date = `${year}-${month}-${day}`;
-  month = new Date(date).toLocaleString('default', { month: 'long' });
+  const date = `${year}-${month}-${day}`; // No primeiro dia do mes, se não colocar a hora ele retorna pro ultimo dia do mes anterior
+  month = new Date(`${date} 00:00:00`).toLocaleString('default', { month: 'long' });
   const { grupos } = state.fetchGetApiIngressos.data;
   const { idGrupoSelecionado } = state.tabCards;
   const isOpen = state.carrinho.open;
