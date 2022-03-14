@@ -41,8 +41,6 @@ function Carrinho({
     event.stopPropagation();
     const id = event.target.getAttribute('id');
     const date = event.target.getAttribute('date');
-    console.log('DATE??', date);
-    console.log('ID??', id);
     dispatch(setQtdCarrinho({ date, id, operacao: 'delete' }));
   };
 
