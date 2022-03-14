@@ -35,18 +35,12 @@ const slice = createSlice({
     chageDate(state, action) {
       state.date = action.payload;
     },
-    resetDate(state) {
-      console.log('TO AQI');
-      state.date.day = '';
-      state.date.month = '';
-      state.date.year = '';
-    },
   },
 
 });
 
 export const {
-  fetchStarted, fetchSucess, fetchError, chageDate, resetDate,
+  fetchStarted, fetchSucess, fetchError, chageDate,
 } = slice.actions;
 
 export const fetchGetDayIgressos = () => async (dispatch) => {

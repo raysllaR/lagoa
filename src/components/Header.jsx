@@ -1,6 +1,5 @@
 /* eslint-disable react/button-has-type */
 import React from 'react';
-import { Link } from 'react-router-dom';
 import style from './styles/Header.module.css';
 
 function Header() {
@@ -58,9 +57,9 @@ function Header() {
           </button>
         </div>
       </div>
-      <Link to="/" className={style.aLogoLagoa}>
+      <a href="/" className={style.aLogoLagoa}>
         <img src="https://sofalta.eu/meuingresso/public/lagoa/logos/logo-lagoa.svg" alt="Logo lagoa" />
-      </Link>
+      </a>
       <div className={style.divImgOnda} />
     </header>
   );

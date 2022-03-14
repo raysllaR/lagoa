@@ -1,23 +1,19 @@
 /* eslint-disable no-return-assign */
 /* eslint-disable no-shadow */
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import CarrinhoTop from '../components/CarrinhoTop';
 import Carrinho from '../components/corpoComponents/Carrinho';
-import { resetDate } from '../store/dadosApi';
 import style from './styles/Calendario.module.css';
 
 function Calendario() {
-  const dispatch = useDispatch();
-
   useEffect(() => {
     const initCalendar = async () => {
       await new window.CalendarSFE('#calendar', 'lagoa', true);
     };
 
     initCalendar();
-    dispatch(resetDate());
   }, []);
 
   const state = useSelector((state) => state);

@@ -1,6 +1,7 @@
 * {
   text-decoration: none;
   font-family: roboto, sans-serif !important;
+  user-select: none;
 }
   
 body {

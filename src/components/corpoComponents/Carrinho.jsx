@@ -168,7 +168,7 @@ function Carrinho({
       }}
     >
       <div className="container-details-carrinho">
-        <div className="details-carrinho" style={pageLogin ? { width: '100%', maxWidth: '550px' } : {}}>
+        <div className="details-carrinho" style={pageLogin ? { width: '100%', maxWidth: '550px', cursor: 'auto' } : {}}>
           <div className="container-data-carrinho">
             {(changeLogo || isCalendario) && <img width={114} src="https://sofaltaeuimagens.s3-sa-east-1.amazonaws.com/maiseu.svg" alt="logo so falta eu carrinho" />}
             {(!changeLogo && !isCalendario
