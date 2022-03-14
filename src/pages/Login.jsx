@@ -34,16 +34,11 @@ function Login({ isCarrinho }) {
 
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
-  console.log('VRUM VRUM VRUM ', state.carrinho);
 
   React.useEffect(() => {
     dispatch(setValorCarrinho());
     dispatch(setQuantodadeItensCarrinho());
   });
-
-  React.useEffect(() => {
-    console.log('HASHHHH', window.location.hash);
-  }, [window.location.hash]);
 
   return (
     <>
