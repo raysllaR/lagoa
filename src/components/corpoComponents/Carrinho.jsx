@@ -15,7 +15,7 @@
 /* eslint-disable max-len */
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setTextButtonOutroDia, setTextProximoFinalizar } from '../../store/buttonsText';
+import { setTextButtonOutroDia } from '../../store/buttonsText';
 import {
   openOrCloseCarrinho,
   setQtdCarrinho,
@@ -62,8 +62,6 @@ function Carrinho() {
     dispatch(setQtdCarrinho({ date, id, operacao: 'delete' }));
   };
 
-  // TODO: mudar a setinha de direção quando clicar no para abrir o carrinho
-
   const addVirgula = (valueCents) => (
     (valueCents / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2, currency: 'BRL' })
   );
@@ -75,15 +73,19 @@ function Carrinho() {
     if (Object.keys(listItens).length === 0) {
       divProdutosCarrinho.innerHTML = '<span>Nenhum produto adicionado ao carrinho</span>';
     } else {
-      Object.keys(listItens).forEach((key) => {
+      Object.keys(listItens).forEach((key, index) => {
         [year, month, day] = key.split('-');
         let monthString = new Date(`${year}-${month}-${day}`).toLocaleString('default', { month: 'long' });
 
+        if (index > 0) {
+          divProdutosCarrinho.innerHTML += '<div style="border-bottom: solid 0.25px #dee6ed; width: 98%; margin-top: 1%; margin-bottom: 1%" ></div>';
+        }
         divProdutosCarrinho.innerHTML += `
           <div class="dateCarrinho" style="text-align: center; padding: 5px; padding-top: 20px; box-sizing: border-box; color: rgb(90, 108, 124); font-size: 1.1em; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; transition: all 0.2s ease 0s;">
             ${day} de ${monthString} de ${year}<span class="" value="${day}-${month}-${year}" style="color: rgb(45, 157, 1); background-color: rgb(241, 255, 235); font-size: 0.87rem; padding: 4px 13px; border-radius: 6px; margin: 0px 5px; cursor: pointer;">${key === date ? 'Dia selecionado' : 'Alterar'}</span>
           </div>
         `;
+
         Object.keys(listItens[key]).forEach((keyItem) => {
           const newProdutosListaCarrinho = document.createElement('div');
           newProdutosListaCarrinho.classList.add('produto-lista-carrinho');
@@ -103,6 +105,7 @@ function Carrinho() {
 
       document.querySelectorAll('.dateCarrinho').forEach((date) => date.addEventListener('click', ({ target }) => {
         if (target.textContent === 'Alterar') {
+          dispatch(openOrCloseCarrinho());
           window.location.href = `http://localhost:3000/lagoa/#/ingressos/${window.btoa(target.getAttribute('value'))}`;
           window.location.reload();
         }
