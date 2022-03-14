@@ -12,7 +12,6 @@ import './App.css';
 import CarrinhoTop from './components/CarrinhoTop';
 import Login from './pages/Login';
 import { openOrCloseCarrinho } from './store/carrinhoData';
-import PageNotFound from './pages/PageNotFound';
 
 function App() {
   const isOpen = useSelector((state) => state.carrinho.open);
@@ -35,7 +34,6 @@ function App() {
           <Route path="/" element={<Calendario />} />
           <Route path="/:url" element={<Corpo />} />
           <Route path="/login" element={<Login />} />
-          <Route path="*" element={<PageNotFound />} />
         </Routes>
         <Footer />
       </BrowserRouter>
