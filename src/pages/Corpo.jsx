@@ -19,7 +19,9 @@ import Loading from '../components/corpoComponents/Loading';
 import MessageError from '../components/corpoComponents/MessageError';
 import Tabs from '../components/corpoComponents/Tabs';
 import { setTextProximoFinalizar } from '../store/buttonsText';
-import { openOrCloseCarrinho, setListItens } from '../store/carrinhoData';
+import {
+  openOrCloseCarrinho, setListItens, setQuantodadeItensCarrinho, setValorCarrinho,
+} from '../store/carrinhoData';
 import { fetchGetDayIgressos } from '../store/dadosApi';
 import { setIdGrupoSelecionado } from '../store/tabCards';
 import style from './styles/Corpo.module.css';
